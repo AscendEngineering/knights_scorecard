@@ -1,0 +1,99 @@
+-okay, so the best way to do this would be to somehow integrate with google claendar
+	-we are probably going to have to do this using api calls to be honest
+	-the issue with this is that we are going to have to create our own calendar, then issue an add or edit to google calendar everytime that happens
+	-also, it might be an issue to authenticate with Google Calendar. this would involve sending out requests with c++
+	-yeah as much as I want to experience making a c++ app like htis, python might be the best way to do this.
+	-oh wait, it supports the .net framework...oh, for c sharp....hmmmm. this is tough. because we can make this in c#. that might actually be a good mix
+	-that would align more with my goals, but I am not suer how to make cross platofrm c#.
+-okay, so what are we going to do next...I guess I should ugh, pick a languge and start fucking going I guess.
+-python will probably be best to be honest. what I really need to do is make sure that I can run it on my windows 10 machine too.
+-so lets just make one and see
+
+
+
+
+
+
+IDEAS
+_______________________________________________________
+-program will load and save a file that will have all of this information.
+	-in this way we won't have to worry about the program pulling data from a server or a computer crashing and losing all data
+	-the responsibility of keeping that file safe will be on the user
+-dont want to make too complex, but it would be nice to integrate with current invoicing
+
+
+
+
+QUESTIONS
+_______________________________________________________
+-how do you manage google calendar events through the PhoneBurner software?
+	-ideally the Scorecard program could just pull in google calendar events instead of you having to enter this data manually. However, I need to know more about how integrated your PhoneBurner software is with Google Calendar
+-Do you have any idea of how you want to predict future earnings?
+	-Based on future calendar meetings
+	-(average earnings of each agent per day) * (number of agents) * (number of days)
+	-some other correlation between time, number of agents, past meeting numbers
+-Are there any other agent statistics you would like to track besides number of meetings?
+	-maybe user rating of client or other data you collect on them
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ANSWERED
+_______________________________________________________
+-how would you feel about a software program compared to an excel spreadsheet
+
+-what utilities are you currently working with? – Yes very open to outside conventional wisdom.
+
+                -keep track of information – My current CRM Program keeps reports, reports then are matched with Google Calendar and affirmed that there was an appointment and should be billed at the end of the month.
+
+                -receive payments – Paypal
+
+                -send out invoices – Via Paypal
+
+                -Calendar?: I believe you mentioned google calendar – Google Calendar very user friendly and calendar sharing is excellent and interfaces with Outlook
+
+-how many individual field agents are you tracking? – 30 Agents and growing.
+
+-do you need to keep track of the members that they are seeing? – Yes, my currently program Phone Burner accomplishes a lot of the CRM needed to maintain keeping track of KC Members and the results of our phone discussions.
+
+                -information on the members such as name, phone number, etc... Phone Burner accomplishes this currently for us.
+
+-do you need to track statistics per agent? – Yes, statistics would be very appealing…currently not doing this.
+
+                -meetings they had – Yes, I’m very open to this feature. Statistics will allow us to continue to sell our service to other agents. As well, assist in our exit strategy and we continue to build this business to sell.
+
+                -what came of the meetings – Yes.
+
+                -etc...
+
+-would you like a visual representation of the number of meetings each agent had over time?
+
+-such as a line graph – Yes, sounds sophisticated and interesting.
+
+-assume you want to be able to view the scorecard from days/weeks/months years in the past correct? – Yes.
+
+-is there a team that you work with? – No team currently just myself and 1 associate.
+
+                -how do you divide clients -  I call for all the clients.
+
+-Do you care about logging when the meetings take place, or whether they actually occurred – We confirm every appointment the day prior and that has served as confirmation that the actual appointment occurred or will occur and is then deemed billable.
+
+-Do you want the scorecard to make predictions about how much you will earn in the future based on the values of the past? – Yes.
