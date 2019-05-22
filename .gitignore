@@ -1,3 +1,6 @@
 knights_scorecard_wire.epgz
 knights_scorecard_wire.pdf
 untitled_page.png
+env/
+db.sqlite3
+__pycache__
