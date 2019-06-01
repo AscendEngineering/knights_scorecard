@@ -12,6 +12,9 @@
     <!-- Load polyfills to support older browsers -->
     <script src="//polyfill.io/v3/polyfill.min.js?features=es2015%2CMutationObserver" crossorigin="anonymous"></script>
 
+    <!-- axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
     <!-- Load Vue followed by BootstrapVue -->
     <script src="//unpkg.com/vue@latest/dist/vue.min.js"></script>
     <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>  
@@ -20,67 +23,28 @@
 
   </head>
   <body>
-    <div id="app">
+    <div id="app" >
         <b-jumbotron header="Knights Scorecard"></b-jumbotron>
+        <b-row>
+          <b-col class="m-3">
+            <h1>Knights</h1>
+              <b-table 
+                striped 
+                bordered 
+                hover 
+                responsive 
+                :items="knights" 
+                class="list-scrollable" 
+                thead-class="hide-header"
+                @row-clicked='knight_selected' >
+              </b-table>
+          </b-col>
 
-        <b-container>
-          <b-list-group class="d-inline-block list-scrollable">
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item><b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-              <b-list-group-item>Some bullshit</b-list-group-item>
-          </b-list-group>
-        </b-container>
-
-
-
+          <b-col class="m-3">
+            <h1>Total Metrics</h1>
+            <b-table striped bordered :fields="fields" :items="items"></b-table>
+          </b-col>
+        </b-row>
 
     </div>
     

@@ -8,10 +8,29 @@
 -okay, so what are we going to do next...I guess I should ugh, pick a languge and start fucking going I guess.
 -python will probably be best to be honest. what I really need to do is make sure that I can run it on my windows 10 machine too.
 -so lets just make one and see
-
-
-
-
+-so we are going to do this online...also so we can fix problems and update as needed
+-so we do need to figure out the apis and everything. so what info do we need to get. we need to get this info fresh in our heads again
+-right so I hate to admit it,but I am going to need to figure out the google caledanr integration first
+-getting that module to work will be the first thing that we have to do....and i need to make sure that we get the events back when they are changed and stuff.
+-I need to create a module that will automatically create an event, in a google calendar window....but so I even need to store that info????
+-no google calendar is our backend database. heres how it will work....we will issue create commands from our module and front end, and we will show the 
+google calendar on our frontend as well. whenever we want to find out metrics on an individual we will just query google calendar. 
+-so essentially google calendar is our database. and we will only issue create commands to it....but the trick will be forcing the user to create events
+through our interface, and not that of Google Calendar.
+-I will basically need to give him a new calendar, and have him transition over
+-this is perfect. the embedded calendar is read only anyways. so to add an event in the mainpage the user will be forced to go through
+our module. to delete an event they will have to go to google calendar, and to get metrics we will query google calendar.
+-for this we will want to create a module that will handle all of this for us. getting information on events is important. 
+	-getEvents
+-I bet that I can keep a list of event ids locally, and that can help me with my update from Google calendar. it will be hard to keep 
+this in exact sync with google calendar though. but I do not see an api that lets me select a range of dates to get from
+-so we will not have to keep track of the events, we can set max and min date parameters
+-so we know this is possible, but we do need to get this running in python
+-so it looks like I just need a client_secrets.json file and I will be good, which is pretty fortunate
+-okay, what else. we need to build out the module that will assist us in grabbing all these events
+-alright, what is next. we need to figure out how to pass along the name.
+-well it comes in in the url....the template...as an argument
+-the only thing I can think of is to scan the url to find it
 
 
 IDEAS
@@ -24,6 +43,35 @@ _______________________________________________________
 
 
 
+TODO
+_______________________________________________________
+-apis
+	-our server
+		-getPredictedIncome
+			-parameters: # dates into future, name of knight (if none return aggregate of all)
+			-returns: predicted income for time frame based on # of meetings scheduled
+		-addKnight
+			-parameters: name of knight
+			-returns: whether it was successful or not
+		-deleteKnight
+			-parameters: name of knight
+			-returns: whether deletion really worked
+	-google calendar
+		-getNumFutureMeetings
+			-parameters: # dates into future
+			-returns: json data of all the future meeting calednar events
+		-addFutureMeeting
+			-parameters: json of event details
+
+
+
+-need to create landing page that will allow us to save user's google key (like postman did. we signed in with Google)
+-make sure that the height of our columns stay within the bounds of the window. we do not want to scroll to see these items
+-figure out why we have a horizontal scroll at the bottom....no matter what we seem to do
+-make sure that modal closes after we submit it
+-add meeting length
+
+
 QUESTIONS
 _______________________________________________________
 -how do you manage google calendar events through the PhoneBurner software?
@@ -34,12 +82,26 @@ _______________________________________________________
 	-some other correlation between time, number of agents, past meeting numbers
 -Are there any other agent statistics you would like to track besides number of meetings?
 	-maybe user rating of client or other data you collect on them
+-Are there any meetings that you set up outside of the Eastern time zone
+-what are the lengths of the meeting?
 
 
+RESOURCES
+_______________________________________________________
+-Google calendar getAPI: https://developers.google.com/calendar/v3/reference/events/list
+-Google calendar postAPI: https://developers.google.com/calendar/v3/reference/events/insert
+	-https://www.googleapis.com/calendar/v3/calendars/calendarId/events
+-resource for adding permissions for Google pass through authentication: https://developers.google.com/identity/sign-in/web/server-side-flow
 
+-test calendar
+	id: stainless809@gmail.com
+	eventid: 0ef72rn5h51uhdbghg7vivepgj
 
-
-
+-embedd google calendar: 
+	<b-container>
+		<!-- Google Calendar -->
+		<iframe src="https://calendar.google.com/calendar/b/1/embed?height=600&amp;wkst=1&amp;bgcolor=%23ffffff&amp;ctz=America%2FChicago&amp;src=c3RhaW5sZXNzODA5QGdtYWlsLmNvbQ&amp;src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&amp;src=ZW4udXNhI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&amp;color=%237986CB&amp;color=%237986CB&amp;color=%237986CB" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+	</b-container>
 
 
 

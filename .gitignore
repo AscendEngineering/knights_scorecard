@@ -4,3 +4,5 @@ untitled_page.png
 env/
 db.sqlite3
 __pycache__
+client_secrets.json
+calendar.dat
