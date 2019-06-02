@@ -45,7 +45,8 @@ var app = new Vue({
         "client_details": "",
         "date": "",
         "time": ""
-      }
+      },
+      filter: ""
       
   },
   methods: {
@@ -57,20 +58,23 @@ var app = new Vue({
       },
       knight_selected: function(record,indx){
         console.log(indx);
-        knight_url = "/knight/" + this.knights[indx]["Knight"];
+        console.log(record.Knight);
+        knight_url = "/knight/" + record.Knight;
         window.location.pathname=knight_url;
       },
       new_meeting: function(event){
-        event.preventDefault()
+  
         //send axios request
-        console.log(this.form.client_name)
         axios.post('',this.form)
           .then(function(response){
-            console.log(response);
+            
           })
           .catch(function(response){
             console.log(response)
           });
+
+          //refresh
+          location.reload(false);
 
       }
   }

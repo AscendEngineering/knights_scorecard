@@ -21,7 +21,7 @@ def knightsPage(request,name):
         
     elif request.method == 'POST':
         print(json.loads(request.body.decode('utf-8')))
-        #postToCal(json.loads(request.body.decode('utf-8')))
+        postToCal(json.loads(request.body.decode('utf-8')),name)
         return(HttpResponse("created"))
 
     else:

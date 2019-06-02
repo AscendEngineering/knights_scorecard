@@ -32,6 +32,13 @@ this in exact sync with google calendar though. but I do not see an api that let
 -well it comes in in the url....the template...as an argument
 -the only thing I can think of is to scan the url to find it
 
+-okay, so we need to figure out why we have insufficient permissions
+-okay, so we are still getting these insufficient permissions and it is because that api is not allowed since we do not have a verified app
+
+-for right now we are just going to role with this
+-okay cool, so we can add calednar events. I have figured that out
+-so, just as a fun thing lets figure out how to do the searches in the main menu, so vue search
+
 
 IDEAS
 _______________________________________________________
@@ -70,6 +77,8 @@ _______________________________________________________
 -figure out why we have a horizontal scroll at the bottom....no matter what we seem to do
 -make sure that modal closes after we submit it
 -add meeting length
+-figure out a way to serve token.pickle request page to the user
+-make sure our timezones change appropriatly
 
 
 QUESTIONS
@@ -103,7 +112,7 @@ _______________________________________________________
 		<iframe src="https://calendar.google.com/calendar/b/1/embed?height=600&amp;wkst=1&amp;bgcolor=%23ffffff&amp;ctz=America%2FChicago&amp;src=c3RhaW5sZXNzODA5QGdtYWlsLmNvbQ&amp;src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&amp;src=ZW4udXNhI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&amp;color=%237986CB&amp;color=%237986CB&amp;color=%237986CB" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
 	</b-container>
 
-
+-page that works when authenticating with Google: https://developers.google.com/calendar/quickstart/python
 
 
 
