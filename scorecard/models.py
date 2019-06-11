@@ -75,7 +75,7 @@ def postToCal(formData, knight):
     event = fillTemplate(title,description,start_time,end_time)
     event = service.events().insert(calendarId='stainless809@gmail.com', body=event).execute()
 
-    if(event.status=='confirmed'):
+    if(event['status']=='confirmed'):
         return True
     else:
         return False

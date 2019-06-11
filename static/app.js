@@ -4,8 +4,13 @@ var app = new Vue({
       message: 'Hello Vue!',
       fields: ["Time", "# Meetings", "Predicted Income"],
       items: [
-        {"Time": "Last year", "# Meetings": "5", "Predicted Income": "$500"},
+        {"Time": "This Year", "# Meetings": "20", "Predicted Income": "$10000"},
+        {"Time": "This Month", "# Meetings": "20", "Predicted Income": "$1000"},
+        {"Time": "This Week", "# Meetings": "20", "Predicted Income": "$100"},
+        {"Time": "Today", "# Meetings": "1", "Predicted Income": "$50"},
+        {"Time": "Last Week", "# Meetings": "2", "Predicted Income": "$100"},
         {"Time": "Last Month", "# Meetings": "20", "Predicted Income": "$1000"},
+        {"Time": "Last year", "# Meetings": "120", "Predicted Income": "$10000"}
       ],
       knights: [
         {"Knight":"Felix"},
@@ -46,7 +51,8 @@ var app = new Vue({
         "date": "",
         "time": ""
       },
-      filter: ""
+      filter: "",
+      currentKnight:""
       
   },
   methods: {
@@ -57,17 +63,16 @@ var app = new Vue({
         console.log("test");
       },
       knight_selected: function(record,indx){
-        console.log(indx);
-        console.log(record.Knight);
-        knight_url = "/knight/" + record.Knight;
-        window.location.pathname=knight_url;
+        this.currentKnight = record.Knight
+        knight_url = 'knight/?name=' + record.Knight;
+        console.log(knight_url)
+        window.location.href=knight_url;
       },
       new_meeting: function(event){
-  
+        
         //send axios request
         axios.post('',this.form)
           .then(function(response){
-            
           })
           .catch(function(response){
             console.log(response)
@@ -76,6 +81,20 @@ var app = new Vue({
           //refresh
           location.reload(false);
 
+      },
+
+      request_metrics: function(days_ago,metrics){
+        //create the json with the days ago, metrics, and username
+        console.log("TODO");
+
+        //send to the current url
+
+        //on response fill out the html
+
+
+
       }
+
+
   }
 });

@@ -13,13 +13,15 @@ def mainPage(request):
     return render(request, 'index.html')
 
 @csrf_exempt
-def knightsPage(request,name):
-    
+def knightsPage(request):
+
     if request.method == 'GET':
+        name = request.GET.get('name')
         context = {"name": name}
         return render(request, 'knights.html',context)
         
     elif request.method == 'POST':
+        name = request.POST.get('name')
         print(json.loads(request.body.decode('utf-8')))
         postToCal(json.loads(request.body.decode('utf-8')),name)
         return(HttpResponse("created"))

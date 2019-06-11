@@ -38,6 +38,20 @@ this in exact sync with google calendar though. but I do not see an api that let
 -for right now we are just going to role with this
 -okay cool, so we can add calednar events. I have figured that out
 -so, just as a fun thing lets figure out how to do the searches in the main menu, so vue search
+-cool, we have filter working too
+-so the next thing is to pull metrics. the first part of this was going to be pulling all the events from google calendar
+-hmmmmm okay so I think we got what we needed figuring this out
+-so we are going to have to think about how in javascript we are going to be able to request this type of data. so we can call a method that requests
+this shit...on page load we will send off that request
+-right so on page load we will always need to load metrics. so when we load these metrics if we have a name we can send that in the request, if there is 
+no name then we will fetch all.
+-so I guess the first step is going to be that we need to figure out how to request this stuff from my server. what 
+-hmmm, the issue is going to be sending the name. the issue is we are using the same function for the main page and for the knights. so how are we going to 
+pull the name???
+
+-right so we know the name is going to be the hardest part, vue needs to know what name we are on....so we can get that from the url, or what else???? because I 
+am tired of getting it from the fucking url. when we render that html can we basically save that name....no that is going to be in python....the only way that we know 
+the name is because it is in the javascript. lets try to see if we can change the path url. in that way we can include arguments in the url....and this will be easier
 
 
 IDEAS
@@ -79,6 +93,8 @@ _______________________________________________________
 -add meeting length
 -figure out a way to serve token.pickle request page to the user
 -make sure our timezones change appropriatly
+-restructure our models so that we have a google calendar class that we call, instead of all of these methods
+
 
 
 QUESTIONS
@@ -93,7 +109,8 @@ _______________________________________________________
 	-maybe user rating of client or other data you collect on them
 -Are there any meetings that you set up outside of the Eastern time zone
 -what are the lengths of the meeting?
-
+-what kind of info do you need from clients
+-would you want calendar events to be sent out to clients as well?
 
 RESOURCES
 _______________________________________________________
@@ -114,7 +131,10 @@ _______________________________________________________
 
 -page that works when authenticating with Google: https://developers.google.com/calendar/quickstart/python
 
-
+-post solved our issue about passing in parameters after question mark
+	-https://www.fir3net.com/Web-Development/Django/django-how-can-i-pass-a-string-from-a-url-to-a-view.html
+	-the trick is that after the question mark gets included in the request, so we will need to grab the info from 
+		the get request
 
 
 

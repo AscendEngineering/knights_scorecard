@@ -24,31 +24,14 @@
   </head>
   <body>
     <div id="app" >
-      <b-row>
+    <b-row>
+        <h1 class="m-5"> <a style="text-decoration:none;color: black" href='/'>Home</a> | {{ name }}</h1>
+        <b-button v-b-modal.modal-1 class="m-5">Add Meeting</b-button>
+    </b-row>
+    <b-row>
         <b-col>
-          <h1 class="m-5">{{ name }}</h1>
-          <div>
-              <b-button v-b-modal.modal-1 class="m-5">Add Meeting</b-button>
-            
-              <b-modal 
-                id="modal-1"
-                title="Add Meeting"
-                @ok="new_meeting">
-                <form ref="form" @submit.stop.prevent="handleSubmit">
-                    <b-form-group>
-                        <label :for="client_name">Client Name</label>
-                        <b-form-input v-model=form.client_name id="client_name" type="text" placeholder="Enter Client Name"></b-form-input>
-                        <label :for="client_details">Client Details</label>
-                        <b-form-textarea v-model=form.client_details rows="3" max-rows="6" placeholder="Enter Client Detail" id="client_details"></b-form-textarea>
-                        <label :for="date">Meeting Date</label>
-                        <b-form-input v-model=form.date id="date" type="date"></b-form-input>
-                        <label :for="time">Meeting Time</label>
-                        <b-form-input v-model=form.time id="time" type="time"></b-form-input>
-                    </b-form-group>
-                  </form>
-              </b-modal>
-            </div>
-        </b-col>
+            <iframe class="m-5" src="https://calendar.google.com/calendar/embed?src=stainless809%40gmail.com&ctz=America%2FChicago" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+        </b-col>    
         <b-col>
             <b-table 
             striped 
@@ -56,13 +39,28 @@
             :fields="fields" :items="items"
             class="m-5"
             ></b-table>
-        </b-col>
-      </b-row>
-      <b-row>
-          <iframe class="m-5" src="https://calendar.google.com/calendar/b/1/embed?height=600&amp;wkst=1&amp;bgcolor=%23ffffff&amp;ctz=America%2FChicago&amp;src=c3RhaW5sZXNzODA5QGdtYWlsLmNvbQ&amp;src=YWRkcmVzc2Jvb2sjY29udGFjdHNAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&amp;src=ZW4udXNhI2hvbGlkYXlAZ3JvdXAudi5jYWxlbmRhci5nb29nbGUuY29t&amp;color=%237986CB&amp;color=%237986CB&amp;color=%237986CB" style="border-width:0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
-      </b-row>
+        </b-col> 
+    </b-row>
 
-
+    <div>
+        <b-modal 
+        id="modal-1"
+        title="Add Meeting"
+        @ok="new_meeting">
+        <form ref="form" @submit.stop.prevent="handleSubmit">
+            <b-form-group>
+                <label :for="client_name">Client Name</label>
+                <b-form-input v-model=form.client_name id="client_name" type="text" placeholder="Enter Client Name"></b-form-input>
+                <label :for="client_details">Client Details</label>
+                <b-form-textarea v-model=form.client_details rows="3" max-rows="6" placeholder="Enter Client Detail" id="client_details"></b-form-textarea>
+                <label :for="date">Meeting Date</label>
+                <b-form-input v-model=form.date id="date" type="date"></b-form-input>
+                <label :for="time">Meeting Time</label>
+                <b-form-input v-model=form.time id="time" type="time"></b-form-input>
+            </b-form-group>
+            </form>
+        </b-modal>
+    </div>
         
         
 
