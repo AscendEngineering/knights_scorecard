@@ -36,8 +36,10 @@
             <b-table 
             striped 
             bordered
+            fixed
             :fields="fields" :items="items"
-            class="m-5"
+            :sort-by.sync="sortBy"
+            class="tight_content"
             ></b-table>
         </b-col> 
     </b-row>
@@ -62,15 +64,8 @@
         </b-modal>
     </div>
         
-        
-
     </div>
     
-
-
-
-
-
 
 </body>
 

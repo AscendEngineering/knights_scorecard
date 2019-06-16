@@ -2,16 +2,8 @@ var app = new Vue({
   el: '#app',
   data: {
       message: 'Hello Vue!',
-      fields: ["Time", "# Meetings", "Predicted Income"],
-      items: [
-        {"Time": "This Year", "# Meetings": "20", "Predicted Income": "$10000"},
-        {"Time": "This Month", "# Meetings": "20", "Predicted Income": "$1000"},
-        {"Time": "This Week", "# Meetings": "20", "Predicted Income": "$100"},
-        {"Time": "Today", "# Meetings": "1", "Predicted Income": "$50"},
-        {"Time": "Last Week", "# Meetings": "2", "Predicted Income": "$100"},
-        {"Time": "Last Month", "# Meetings": "20", "Predicted Income": "$1000"},
-        {"Time": "Last year", "# Meetings": "120", "Predicted Income": "$10000"}
-      ],
+      fields: ["Days", "Past Meetings", "Future Meetings"],
+      items: [],
       knights: [
         {"Knight":"Felix"},
         {"Knight":"Konnor"},
@@ -44,7 +36,6 @@ var app = new Vue({
         {"Knight":"Trinity"},
         {"Knight":"Karley"}
       ],
-
       form: {
         "client_name": "",
         "client_details": "",
@@ -52,30 +43,34 @@ var app = new Vue({
         "time": ""
       },
       filter: "",
+      sortBy: "Days",
       currentKnight:""
       
   },
   methods: {
-      created: function() {
-        console.log('Hello World')
-      },
       test: function(){
         console.log("test");
       },
       knight_selected: function(record,indx){
-        this.currentKnight = record.Knight
+        this.currentKnight = record.Knight;
         knight_url = 'knight/?name=' + record.Knight;
-        console.log(knight_url)
+        console.log(knight_url);
         window.location.href=knight_url;
       },
       new_meeting: function(event){
         
+        var url = new URL(window.location.href);
+        var name = url.searchParams.get("name");
+        data_req = this.form;
+        data_req["knight"] = name;
+
         //send axios request
-        axios.post('',this.form)
+        axios.post('',data_req)
           .then(function(response){
+            console.log("sent");
           })
           .catch(function(response){
-            console.log(response)
+            console.log(response);
           });
 
           //refresh
@@ -84,17 +79,33 @@ var app = new Vue({
       },
 
       request_metrics: function(days_ago,metrics){
+
+        //grab username
+        var url = new URL(window.location.href);
+        var name = url.searchParams.get("name");
+
         //create the json with the days ago, metrics, and username
-        console.log("TODO");
+        data = {"days_ago": days_ago, "metrics": metrics, "name": name};
 
         //send to the current url
+        axios.get('/metrics',{
+          params:data
+        })
+          .then((response) => {
+            this.items.push(response.data);
+          })
+          .catch(function(response){
+            console.log("failed");
+          })
 
-        //on response fill out the html
-
-
-
-      }
-
+      },
+  },
+  mounted: function() {
+    this.request_metrics(1,"");
+    this.request_metrics(7,"");
+    this.request_metrics(30,"");
+    this.request_metrics(365,"");
+    
 
   }
 });

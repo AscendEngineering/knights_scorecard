@@ -5,4 +5,5 @@ from .views import *
 urlpatterns = [
     path('', mainPage, name="mainPage"),
     path('knight/', knightsPage, name="knightsPage"),
+    path('metrics/', getMetrics, name='getMetrics')
 ]

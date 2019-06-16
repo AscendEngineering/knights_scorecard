@@ -94,6 +94,8 @@ _______________________________________________________
 -figure out a way to serve token.pickle request page to the user
 -make sure our timezones change appropriatly
 -restructure our models so that we have a google calendar class that we call, instead of all of these methods
+-pull in the timezone from the user and adjust the clock for that
+-move timezone factor into a constants file (like extratime in models.py)
 
 
 

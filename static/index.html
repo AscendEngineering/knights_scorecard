@@ -44,7 +44,15 @@
 
           <b-col class="m-3">
             <h1>Total Metrics</h1>
-            <b-table striped bordered :fields="fields" :items="items"></b-table>
+            <b-table 
+              striped 
+              bordered
+              fixed
+              :fields="fields" 
+              :items="items"
+              :sort-by.sync="sortBy"
+              class="tight_content"
+              ></b-table>
           </b-col>
         </b-row>
 

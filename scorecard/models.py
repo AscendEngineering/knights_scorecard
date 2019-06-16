@@ -7,17 +7,15 @@ import os.path
 import pickle
 
 
-def formatTime(oldtime):
-    newtime = oldtime
-    newtime = newtime.replace(" ","T")
-    newtime = newtime[:newtime.find('.')] + '-07:00'
-    return newtime
-
-
 def expandTime(date,time):
-    return (date+'T'+time+':00-05:00')
+    extratime = '-05:00'
 
-def fillTemplate(title,description,start_time,end_time):
+    if(time.count(':')<2):
+        extratime = ':00' + extratime
+
+    return (date+'T'+ time + extratime)
+
+def fillWriteTemplate(title,description,start_time,end_time):
     event = {
         'summary': title,
         'description': description,
@@ -59,12 +57,12 @@ def getCredentials():
     return creds
 
 # Create your models here.
-def postToCal(formData, knight):
+def postToCal(formData):
 
     #variables
     start_time = expandTime(formData["date"],formData["time"])
     end_time = expandTime(formData["date"],"17:30") #this is going to have to change/be more dynamic
-    title = knight + " Meeting with " + formData['client_name']
+    title = formData['knight'] + " Meeting with " + formData['client_name']
     description = formData['client_details']
 
     #create the service
@@ -72,7 +70,7 @@ def postToCal(formData, knight):
     service = build('calendar', 'v3', credentials=creds)
 
     #execute the calendar event
-    event = fillTemplate(title,description,start_time,end_time)
+    event = fillWriteTemplate(title,description,start_time,end_time)
     event = service.events().insert(calendarId='stainless809@gmail.com', body=event).execute()
 
     if(event['status']=='confirmed'):
@@ -81,5 +79,35 @@ def postToCal(formData, knight):
         return False
 
 
+def getCalendarData(name,sdate,edate):
+    
+    #form the start date
+    sdatetime = sdate.split(' ')
+    sdate = sdatetime[0]
+    stime = sdatetime[1]
+    start_time = expandTime(sdate,stime)
 
+    #form the end date
+    edatetime = edate.split(' ')
+    edate = edatetime[0]
+    etime = edatetime[1]
+    end_time = expandTime(edate,etime)
+
+    #create service
+    creds = getCredentials()
+    service = build('calendar', 'v3', credentials=creds)
+
+    #execute the get from Google
+    events_data = []
+    page_token = None
+    while True:
+        events = service.events().list(calendarId='stainless809@gmail.com', q=name, timeMin=start_time, timeMax=end_time, pageToken=page_token).execute()
+        events_data.extend(events['items'])
+        page_token = events.get('nextPageToken')
+        if not page_token:
+            break
+
+    return events_data
+
+    
     
