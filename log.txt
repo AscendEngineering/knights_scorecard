@@ -53,6 +53,12 @@ pull the name???
 am tired of getting it from the fucking url. when we render that html can we basically save that name....no that is going to be in python....the only way that we know 
 the name is because it is in the javascript. lets try to see if we can change the path url. in that way we can include arguments in the url....and this will be easier
 
+-okay so what is next. I do want a better calendar, but I should put this thing online so that Hector can actually get to it
+-yeah the next thing that I have to do is actually deploy it on my servers
+
+
+
+
 
 IDEAS
 _______________________________________________________
