@@ -56,7 +56,8 @@ the name is because it is in the javascript. lets try to see if we can change th
 -okay so what is next. I do want a better calendar, but I should put this thing online so that Hector can actually get to it
 -yeah the next thing that I have to do is actually deploy it on my servers
 
-
+-so I am just going to go all in and try to deploy to the server. no transition that I will be trying to do
+-so I do need to figure out how I am going to be able to connect to the django socket and everything. I might have to burn through a few tutorialsx`x`
 
 
 

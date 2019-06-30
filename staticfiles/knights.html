@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+
+    
+  <head>
+    <title>Knight's Scorecard</title>
+
+    <!-- Load required Bootstrap and BootstrapVue CSS -->
+    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />
+
+    <!-- Load polyfills to support older browsers -->
+    <script src="//polyfill.io/v3/polyfill.min.js?features=es2015%2CMutationObserver" crossorigin="anonymous"></script>
+
+    <!-- axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <!-- Load Vue followed by BootstrapVue -->
+    <script src="//unpkg.com/vue@latest/dist/vue.min.js"></script>
+    <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>  
+
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    
+
+  </head>
+  <body>
+    <div id="app" >
+    <b-row>
+        <h1 class="m-5"> <a style="text-decoration:none;color: black" href='/'>Home</a> | {{ name }}</h1>
+        <b-button v-b-modal.modal-1 class="m-5">Add Meeting</b-button>
+    </b-row>
+    <b-row>
+        <b-col>
+            <iframe class="m-5" src="https://calendar.google.com/calendar/embed?src=stainless809%40gmail.com&ctz=America%2FChicago" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+        </b-col>    
+        <b-col>
+            <b-table 
+            striped 
+            bordered
+            fixed
+            :fields="fields" :items="items"
+            :sort-by.sync="sortBy"
+            class="tight_content"
+            ></b-table>
+        </b-col> 
+    </b-row>
+
+    <div>
+        <b-modal 
+        id="modal-1"
+        title="Add Meeting"
+        @ok="new_meeting">
+        <form ref="form" @submit.stop.prevent="handleSubmit">
+            <b-form-group>
+                <label :for="client_name">Client Name</label>
+                <b-form-input v-model=form.client_name id="client_name" type="text" placeholder="Enter Client Name"></b-form-input>
+                <label :for="client_details">Client Details</label>
+                <b-form-textarea v-model=form.client_details rows="3" max-rows="6" placeholder="Enter Client Detail" id="client_details"></b-form-textarea>
+                <label :for="date">Meeting Date</label>
+                <b-form-input v-model=form.date id="date" type="date"></b-form-input>
+                <label :for="time">Meeting Time</label>
+                <b-form-input v-model=form.time id="time" type="time"></b-form-input>
+            </b-form-group>
+            </form>
+        </b-modal>
+    </div>
+        
+    </div>
+    
+
+</body>
+
+    {% load static %}
+    <script src="{% static 'app.js' %}"></script>
+    <link href="{% static 'style.css' %}" rel="stylesheet">
+
+    
+</html>
+
+
+
+
