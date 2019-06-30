@@ -58,6 +58,11 @@ the name is because it is in the javascript. lets try to see if we can change th
 
 -so I am just going to go all in and try to deploy to the server. no transition that I will be trying to do
 -so I do need to figure out how I am going to be able to connect to the django socket and everything. I might have to burn through a few tutorialsx`x`
+-fix came in that we needed to add a static file path to the urls
+	-https://stackoverflow.com/questions/39907281/django-uwsgi-static-files-not-being-served-even-after-collectstatic
+
+/home/andrewserver2/knights_scorecard/uwsgi_params
+
 
 
 
@@ -145,6 +150,7 @@ _______________________________________________________
 	-the trick is that after the question mark gets included in the request, so we will need to grab the info from 
 		the get request
 
+-connecting nginx to django: https://uwsgi-docs.readthedocs.io/en/latest/tutorials/Django_and_nginx.html
 
 
 
