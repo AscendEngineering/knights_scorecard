@@ -27,7 +27,7 @@ DEBUG = True
 CSRF_COOKIE_SECURE = False
 SESSION_COOKIE_SECURE = False
 
-ALLOWED_HOSTS = ['valutaholdings.duckdns.org']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
