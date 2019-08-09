@@ -110,4 +110,10 @@ def getCalendarData(name,sdate,edate):
     return events_data
 
     
-    
+class knightInfo(models.Model):
+    pid = models.IntegerField()
+    name = models.CharField(max_length=255)
+    email = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.pid

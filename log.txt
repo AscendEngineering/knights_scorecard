@@ -63,6 +63,10 @@ the name is because it is in the javascript. lets try to see if we can change th
 
 /home/andrewserver2/knights_scorecard/uwsgi_params
 
+-so I guess we can read from one persons calendar given our own calednar with permissions right
+-so we just need to build a module that will pull that shit in, and break down what the calendar event actually says.
+-so we need to build a dictionary, this is a lot of work to be doing on the loading of a webpage. then again, we are only grabbing 
+the last 30 days, so yeah lets keep doing this on the fly
 
 
 
@@ -108,7 +112,7 @@ _______________________________________________________
 -restructure our models so that we have a google calendar class that we call, instead of all of these methods
 -pull in the timezone from the user and adjust the clock for that
 -move timezone factor into a constants file (like extratime in models.py)
-
+-move data onto our own database (knight names, their info, etc)
 
 
 QUESTIONS
