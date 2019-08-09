@@ -56,28 +56,6 @@ def getCredentials():
 
     return creds
 
-# Create your models here.
-def postToCal(formData):
-
-    #variables
-    start_time = expandTime(formData["date"],formData["time"])
-    end_time = expandTime(formData["date"],"17:30") #this is going to have to change/be more dynamic
-    title = formData['knight'] + " Meeting with " + formData['client_name']
-    description = formData['client_details']
-
-    #create the service
-    creds = getCredentials()
-    service = build('calendar', 'v3', credentials=creds)
-
-    #execute the calendar event
-    event = fillWriteTemplate(title,description,start_time,end_time)
-    event = service.events().insert(calendarId='stainless809@gmail.com', body=event).execute()
-
-    if(event['status']=='confirmed'):
-        return True
-    else:
-        return False
-
 
 def getCalendarData(name,sdate,edate):
     
