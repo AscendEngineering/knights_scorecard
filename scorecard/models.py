@@ -2,6 +2,7 @@ from django.db import models
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
+import google.oauth2.credentials
 import datetime
 import os.path
 import pickle
@@ -31,7 +32,7 @@ def fillWriteTemplate(title,description,start_time,end_time):
 
     return event
 
-
+#this is outdated and needs to be deleted
 def getCredentials():
 
     SCOPES = ['https://www.googleapis.com/auth/calendar.events']
@@ -56,8 +57,7 @@ def getCredentials():
 
     return creds
 
-
-def getCalendarData(name,sdate,edate):
+def getCalendarData(search,token,sdate,edate):
     
     #form the start date
     sdatetime = sdate.split(' ')
@@ -71,15 +71,31 @@ def getCalendarData(name,sdate,edate):
     etime = edatetime[1]
     end_time = expandTime(edate,etime)
 
+    #get the current gid
+    current_token = ""
+    try:
+        current_gid = request.session.__getitem__("gid")
+        current_knight = knight(current_gid)
+        
+        if(current_knight.token_expired()):
+            return []
+        else:
+            current_token=current_knight.get("token")
+
+    except KeyError as err:
+        print("Error finding user session credentials",err)
+        return []
+
     #create service
-    creds = getCredentials()
+    creds = google.oauth2.credentials.Credentials(current_token)
     service = build('calendar', 'v3', credentials=creds)
+    print("Created service with token",current_token)
 
     #execute the get from Google
     events_data = []
     page_token = None
     while True:
-        events = service.events().list(calendarId='stainless809@gmail.com', q=name, timeMin=start_time, timeMax=end_time, pageToken=page_token).execute()
+        events = service.events().list(calendarId='stainless809@gmail.com', q=search, timeMin=start_time, timeMax=end_time, pageToken=page_token).execute()
         events_data.extend(events['items'])
         page_token = events.get('nextPageToken')
         if not page_token:
@@ -87,11 +103,24 @@ def getCalendarData(name,sdate,edate):
 
     return events_data
 
-    
+#keeps track of the knights
 class knightInfo(models.Model):
-    pid = models.IntegerField()
-    name = models.CharField(max_length=255)
-    email = models.CharField(max_length=255)
+    gid = models.CharField(max_length=63)
+    access_token = models.CharField(max_length=4095)
+    expires_at = models.CharField(max_length=63)
+    name = models.CharField(max_length=63)
+    email = models.CharField(max_length=511)
 
     def __str__(self):
-        return self.pid
+        return self.kid
+
+#keeps track of the user's on the website
+class userInfo(models.Model):
+    gid = models.CharField(max_length=63)
+    idToken = models.CharField(max_length=4096)
+    name = models.CharField(max_length=255)
+    email = models.CharField(max_length=255)
+    
+
+    def __str__(self):
+        return self.uid
