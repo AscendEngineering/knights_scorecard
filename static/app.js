@@ -4,10 +4,7 @@ var app = new Vue({
       message: 'Hello Vue!',
       fields: ["Days", "Past Meetings", "Future Meetings"],
       items: [],
-      knights: [
-        {"Knight":"Felix"},
-        {"Knight":"Konnor"},
-      ],
+      knights: [],
       filter: "",
       sortBy: "Days",
       currentKnight:""
@@ -46,9 +43,32 @@ var app = new Vue({
           })
 
       },
+
+      request_knights: function(){
+        
+        this.knights = [];
+
+        axios.get('/knightList').then((response) => {
+
+          //add knights onto the list
+          var knightList = response.data["knights"];
+          for(i=0; i<knightList.length;i++){
+            this.knights.push({"Knight": knightList[i]});
+          }
+        })
+
+
+      }
+
   },
   mounted: function() {
-    this.request_metrics(30,"");
+    if(window.location.href.includes("name")){
+      this.request_metrics(30,"");
+    }
+    else{
+      this.request_knights();
+    }
+    
   }
 });
 

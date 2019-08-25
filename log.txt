@@ -146,8 +146,61 @@ that just sounds like an http 300 response
 -so now we just need to figure out how to form a credential with just the tokenid, or the saved token
 really
 
+-so the idea is that you will send in a request, and then just tell the sessionManager what to do
+-so, for example, sendin the session managher a request in teh constructor, and then give it a key
+and a value to set, and in the session Manager we will just compensate for errors and such.
+so it would just be a get and set, butit would return "" or None if nothing is set, instead of 
+throwing an error
+
+-so now we just have to test whether these tokens are actually correct. can we actually get access
+to others accounts by just that tokenid....which is ugh....pretty hopeful I guess.
+-might have wanted to do some research before this tbh, but whatever
+
+-looks good big boy. so what is going to need to happen next is that I need to test that
+stainless809 can access wilkinsaf and wilkinsdev. which means that we are going to need to 
+create these userInfo. which means...ugh how are we fucking going to create these....??? I
+guess what we can do is store their emails or something. yeah we really dont need permissions
+from them, just the emails. we will have to put the test cases in manually, just create a 
+test case or something, some other file. that makes sense
+
+-then we see if we can access their google calendar's.
+-alright im tired. night. 
+
+-yeah so I guess the next thing is just to see if we can access another user's google calendar
+with the token that we have. right, because we were granted certain permissions to see their
+calednar
+-we need to do this by assigning the right email addresses to the client list that we have
+-so which email are we granted for rn: stainless809
+-so we need to give access in our wilkinsaf and our dev account
+	-then we need to have those emails as users right.....fuck we messed these tables up
+	-our knights are supposed to be the info, and our users are supposed to be the users of the app.
+	-shit. okay, reset the tables. well its not only that, we have to change code
+
+-perfect, that change took like 5 seconds. okay, now we need to find a way to load the knights into 
+the database. now....should we make a specific tool to do this on the...no
+	-load it up each time we run the server
+	-manually add it in with sql
+	-manually add it in with a script that we have
+		-how hard will this be? would we need to load django to do this..??? probably
 
 
+-so not only do we need to link the gmails, but we need to show the knights calendar in the code
+-so we have the permissions, but now we need to pull up the right calednar
+
+-lol I need to pull the list from the sevrer and then go from there, because right now we are not even getting a list
+
+-okay, so now I need to think about refresh the tokens....fuck. I need to add support for this earlier
+on...Shouldnt we catch the refresh before??? Also 
+
+-okay so for some reason it doesnt l
+-so now we are going to need to figure out uugghhh how we are going to request the email right??
+-well we will pass in the name to the server and ask for a lookup I guess, which is not great tbh.
+ideally it should be a guid, but for now...whatever
+
+-so now we want to get the email...
+-alright, so how are we going to request the metrics just for 
+
+1
 IDEAS
 _______________________________________________________
 -program will load and save a file that will have all of this information.
@@ -187,6 +240,25 @@ to authenticate with google.
 
 -break getPastDates and getFutureDates into a separate file
 -create a sessions file that will handle things for the session
+
+-seems we are having trouble just after assigning the user session gid
+	[25/Aug/2019 15:09:15] "GET /main/knight/?name=Felix HTTP/1.1" 200 2884
+	Error finding user session value gid
+	no gid
+	Unauthorized: /metrics/
+	[25/Aug/2019 15:09:16] "GET /metrics/?days_ago=30&metrics=&name=Felix HTTP/1.1" 401 0
+	Error finding user session value gid
+	no gid
+	Unauthorized: /metrics/
+	[25/Aug/2019 15:09:19] "GET /metrics/?days_ago=30&metrics= HTTP/1.1" 401 0
+
+	-but we are not having issues the second time that we request from the site
+
+
+-change it so that we are sending a uid instead of a name when requesting users
+-expand to_gcal_url in tools.py to include timezone as well
+-figure out how to get metrics for all knights
+-split index.html and knights.html into 2
 
 DONE
 _______________________________________________________
@@ -247,6 +319,7 @@ _______________________________________________________
 
 -this is the url to hit: http://127.0.0.1.xip.io:8000
 
+-drop all tables: python manage.py sqlflush
 
 -json that is returned by our profile and scope request from google
 	{

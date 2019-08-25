@@ -5,9 +5,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.db import models
 import json
 from .models import *
-import datetime
-from pytz import timezone
 from .userManager import *
+from .sessionManager import *
+from .tools import get_gcal_url,getPastDates,getFutureDates
 
 
 def test(request):
@@ -24,39 +24,66 @@ def knightsPage(request):
 
     if request.method == 'GET':
         name = request.GET.get('name')
-        context = {"name": name}
+
+        #get the email
+        email = knight(name).get("email")
+
+        context = {"name": name, "email": get_gcal_url(email)}
         return render(request, 'knights.html',context)
 
     else:
         return HttpResponse(status=400)
 
+
+@csrf_exempt
+def getKnights(request):
+    retVal=[]
+
+    #return the list of knights
+    try:
+        allknights = knightInfo.objects.all()
+        for knight in allknights:
+            retVal.append(knight.name)
+    except:
+        print("Error Accessing Knights emails")
+
+    return(JsonResponse({"knights":retVal}))
+
 @csrf_exempt
 def getMetrics(request):
 
     days = request.GET.get('days_ago','0')
+    name = request.GET.get('name','')
+    current_gid = session(request).get("gid")
 
-    #get the token to access the data
+    print("Name for metrics",name)
+
+    #make sure gid exists
+    if(current_gid == None):
+        print("no gid")
+        return HttpResponse(status=401)
+
+    #select the matching user
+    current_user = user(current_gid)
     current_token = ""
-    try:
-        current_gid = request.session.__getitem__("gid")
-        current_knight = knight(current_gid)
         
-        if(current_knight.token_expired()):
-            return []
-        else:
-            current_token=current_knight.get("token")
+    if(current_user.token_expired()):
+        print("token expired")
+        return HttpResponse(status=401)
+    else:
+        current_token=current_user.get("access_token")
 
-    except KeyError as err:
-        print("Error finding user session credentials",err)
-        return []
+
+    #select the matching knight
+    knight_email = knight(name).get("email")
 
     #get past events
     sdate,edate = getPastDates(int(days))
-    pastEvents = getCalendarData("VM Reminder",sdate,edate)
+    pastEvents = getCalendarData(knight_email,current_token,"Krav", sdate,edate)
 
     #get future events
     sdate,edate = getFutureDates(int(days))
-    futureEvents = getCalendarData("VM Reminder",sdate,edate)
+    futureEvents = getCalendarData(knight_email,current_token,"Krav", sdate,edate)
 
     #run the data through metrics processor
 
@@ -83,17 +110,17 @@ def authenticateUser(request):
         #TODO authorize with google that this is a valid token
         
         #authenticate user
-        current_knight = knight(user_data["gid"])
-        if(current_knight.exists() and (not current_knight.token_expired())):
-            print("User:", current_knight,"|",user_data["name"])
-            request.session.__setitem__("gid",current_knight.get("gid"))
+        current_user = user(user_data["gid"])
+        if(current_user.exists() and (not current_user.token_expired())):
+            session(request).set("gid",current_user.get("gid"))
             return HttpResponse("authorized")
         else:
+            
             #store the client's credentials
-            succ = current_knight.make(user_data)
+            succ = current_user.make(user_data)
 
             if(succ):
-                request.session.__setitem__("gid",current_knight.get("gid"))
+                session(request).set("gid",current_user.get("gid"))
                 return HttpResponse("authorized")
             else:
                 return HttpResponse(status=401)
@@ -110,20 +137,3 @@ def authorizeUser(request):
 
     return HttpResponse("Need to authorize")
 
-def getPastDates(days_ago):
-
-    #get start and end dates
-    today = datetime.datetime.now().replace(tzinfo=timezone('US/Central'))
-    edate = datetime.datetime(today.year, today.month, today.day)
-    sdate = datetime.datetime(today.year, today.month, today.day) - datetime.timedelta(days_ago)
-
-    return str(sdate),str(edate)
-
-def getFutureDates(days_future):
-
-    #get start and end dates
-    today = datetime.datetime.now().replace(tzinfo=timezone('US/Central'))
-    sdate = datetime.datetime(today.year, today.month, today.day)
-    edate = datetime.datetime(today.year, today.month, today.day) + datetime.timedelta(days_future)
-
-    return str(sdate),str(edate)

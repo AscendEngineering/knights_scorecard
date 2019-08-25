@@ -11,4 +11,5 @@ urlpatterns = [
     path('metrics/', getMetrics, name='getMetrics'),
     path('authenticate',authenticateUser,name='authenticateUser'),
     path('authorize',authorizeUser,name='authorizeUser'),
+    path('knightList',getKnights,name='getKnights'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

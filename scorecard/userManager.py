@@ -3,12 +3,12 @@ from django.core.exceptions import *
 import time
 
 
-class knight():
+class user():
 
     def __init__(self,gid):
         self.gid = gid
 
-    #make - makes an entry that includes the details for that knight(option to overwrite if already exists)
+    #make - makes an entry that includes the details for that user (option to overwrite if already exists)
     def make(self,user_data):
         #make sure all of the data exists in user_data
         data_present = (user_data.get("gid") is not None)
@@ -20,25 +20,25 @@ class knight():
         if(not data_present):
             return False
 
-        return True
-
-        #create the knight  
-        knightInfo(gid=data_present["gid"], 
-            access_token=data_present["access_token"], 
-            expires_at=data_present["expires_at"],
-            name=data_present["name"],
-            email=data_present["email"])
+        #create the user
+        new_user = userInfo(gid=user_data["gid"], 
+            access_token=user_data["access_token"], 
+            expires_at=user_data["expires_at"],
+            name=user_data["name"],
+            email=user_data["email"])
 
         #save
-        knightInfo.save()
+        new_user.save()
 
+        return True
 
     #exists - returns whether the user exists or not
     def exists(self):
         
         try:
-            user = knightInfo.objects.get(gid=self.gid)
-        except knightInfo.DoesNotExist as err:
+            user = userInfo.objects.get(gid=self.gid)
+        except userInfo.DoesNotExist as err:
+            print(err)
             return False
         
         if(user != None):
@@ -47,13 +47,13 @@ class knight():
             return False
 
 
-    #delete - deletes the knight
+    #delete - deletes the user
 
     #update_token - updates the access token and the experation date
 
     #is_expired - checks if the access token is expired
-    def is_expired(self):
-        user = knightInfo.objects.get(gid=self.gid)
+    def token_expired(self):
+        user = userInfo.objects.get(gid=self.gid).dict()
         if( int(time.time()) > int(user["expires_at"])):
             return True
         else:
@@ -62,7 +62,7 @@ class knight():
     #get_all - get all fields
     def get_all(self):
         try:
-            user=knightInfo.objects.get(gid=self.gid)
+            user=userInfo.objects.get(gid=self.gid).dict()
             return user
         except:
             return None
@@ -71,8 +71,49 @@ class knight():
     def get(self,metric):
         user_info = self.get_all()
 
+        retVal = ""
         if(user_info != None):
-            return user_info.get(metric)
+            try:
+                retVal = user_info[metric]
+            except KeyError as err:
+                print("metric does not exist")
+                return None
         else:
             return None
+
+        return retVal
+        
+
+
+
+class knight():
+    
+    def __init__(self,name):
+        self.name = name
+
+    #get_all - get all fields
+    def get_all(self):
+        try:
+            knight=knightInfo.objects.get(name=self.name).dict()
+            return knight
+        except knightInfo.DoesNotExist as err:
+            print(err)
+            return None
+
+    #get - get a specific field (returns None if it does not exist)
+    def get(self,metric):
+        knight_info = self.get_all()
+        print(knight_info)
+
+        retVal = ""
+        if(knight_info != None):
+            try:
+                retVal = knight_info[metric]
+            except KeyError as err:
+                print("metric does not exist")
+                return None
+        else:
+            return None
+
+        return retVal
         
