@@ -226,6 +226,10 @@ userInfo matching query does not exist.
 False
 userInfo matching query does not exist.
 
+-so now we actually need to pull the metrics and 
+-actually, what I want to do is create a script that will load the csv of the clients into the 
+app. that shouldn't be that crazy hard
+
 
 IDEAS
 _______________________________________________________
@@ -278,6 +282,8 @@ to authenticate with google.
 -expand to_gcal_url in tools.py to include timezone as well
 -figure out how to get metrics for all knights
 -split index.html and knights.html into 2
+
+-add in some type of logging
 
 DONE
 _______________________________________________________

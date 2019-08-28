@@ -4,9 +4,33 @@
     <meta name="google-signin-client_id" content="124633307597-s1ii2fartnupr8qut8j3burgr0a6ufpu.apps.googleusercontent.com">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <link href='https://fonts.googleapis.com/css?family=Julius Sans One' rel='stylesheet'>
   </head>
   <body>
-    <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+    <div id="center">
+      <div id="main">
+        <h1>Sign In</h1>
+        <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+      </div>
+    </div>
+    <style>
+      #main{
+        position: relative;
+      }
+      #center{
+        position: relative;
+        top: 50%; 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Julius Sans One';
+      }
+
+    
+    
+    </style>
+
+
     <script>
       function postToBackend(url,data){
         //send the data to our backend
@@ -31,6 +55,7 @@
       }
 
       function onSignIn(googleUser) {
+
         // Useful data for your client-side scripts:
         //var profile = googleUser.getBasicProfile();
         auth2 = gapi.auth2.getAuthInstance({
@@ -73,6 +98,7 @@
           });
       }
     </script>
+
   </body>
 </html>
 
