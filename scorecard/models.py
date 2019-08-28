@@ -2,6 +2,7 @@ from django.db import models
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
+from googleapiclient.errors import HttpError
 import google.oauth2.credentials
 import datetime
 import os.path
@@ -34,6 +35,11 @@ def fillWriteTemplate(title,description,start_time,end_time):
 
 def getCalendarData(email,token, search,sdate,edate):
     
+    #sanity check
+    if(token==""):
+        return
+
+
     #form the start date
     sdatetime = sdate.split(' ')
     sdate = sdatetime[0]
@@ -54,9 +60,15 @@ def getCalendarData(email,token, search,sdate,edate):
     events_data = []
     page_token = None
     while True:
-        events = service.events().list(calendarId=email, q=search, timeMin=start_time, timeMax=end_time, pageToken=page_token).execute()
-        events_data.extend(events['items'])
-        page_token = events.get('nextPageToken')
+
+        try:
+            events = service.events().list(calendarId=email, q=search, timeMin=start_time, timeMax=end_time, pageToken=page_token, singleEvents=True).execute()
+            events_data.extend(events['items'])
+            page_token = events.get('nextPageToken')
+        except HttpError as err:
+            print("Error requesting metrics from calendar")
+            break
+
         if not page_token:
             break
 

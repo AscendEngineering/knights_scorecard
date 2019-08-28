@@ -21,15 +21,15 @@ class user():
             return False
 
         #create the user
-        new_user = userInfo(gid=user_data["gid"], 
-            access_token=user_data["access_token"], 
-            expires_at=user_data["expires_at"],
-            name=user_data["name"],
-            email=user_data["email"])
-
-        #save
-        new_user.save()
-
+        obj,created = userInfo.objects.update_or_create(
+            gid=user_data["gid"],
+            defaults={
+                "access_token":user_data["access_token"], 
+                "expires_at":user_data["expires_at"],
+                "name":user_data["name"],
+                "email":user_data["email"],
+            })
+            
         return True
 
     #exists - returns whether the user exists or not
@@ -53,8 +53,14 @@ class user():
 
     #is_expired - checks if the access token is expired
     def token_expired(self):
+        
+        if(not self.exists()):
+            return False
+
         user = userInfo.objects.get(gid=self.gid).dict()
-        if( int(time.time()) > int(user["expires_at"])):
+        current_time = int(round(time.time() *1000))
+
+        if( current_time > int(user["expires_at"])):
             return True
         else:
             return False
@@ -103,7 +109,6 @@ class knight():
     #get - get a specific field (returns None if it does not exist)
     def get(self,metric):
         knight_info = self.get_all()
-        print(knight_info)
 
         retVal = ""
         if(knight_info != None):

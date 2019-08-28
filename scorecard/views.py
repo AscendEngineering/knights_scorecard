@@ -56,8 +56,6 @@ def getMetrics(request):
     name = request.GET.get('name','')
     current_gid = session(request).get("gid")
 
-    print("Name for metrics",name)
-
     #make sure gid exists
     if(current_gid == None):
         print("no gid")
@@ -111,11 +109,11 @@ def authenticateUser(request):
         
         #authenticate user
         current_user = user(user_data["gid"])
+
         if(current_user.exists() and (not current_user.token_expired())):
             session(request).set("gid",current_user.get("gid"))
             return HttpResponse("authorized")
         else:
-            
             #store the client's credentials
             succ = current_user.make(user_data)
 

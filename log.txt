@@ -200,7 +200,33 @@ ideally it should be a guid, but for now...whatever
 -so now we want to get the email...
 -alright, so how are we going to request the metrics just for 
 
-1
+-so I guess we need to refresh the token. But how are we going to do that???
+-dont we have some logicals somewhere. I know we have some logicals to reject if a token is expired
+yeah where is that
+
+-well, maybe we shouldnt be so worried about this, and be more concerned about how to refresh a token when 
+it is done and google will not accept it. might be a good idea
+
+-so I probabhly need to build the request with additional arguments for the credentials
+	-but the question now is, what fields do we have to enter, and more over how do we actually get
+	those fields
+
+-yeah, so I am going to need a refresh token somehow
+-I am thinking that there is no refresh token for javascript applications
+-so, how do we request on python...?????
+-well it seems that our expired method doesnt work. so if we make that work then
+we should be fine. because we'll be granted a new access token everytime.
+
+-so we do need to wait for that token to expire I guess....well no, we can change it in the db
+-so what happened, is when we called the new user function we overwrote what was there before
+-lets not do that, there must be some way to create if its not there and if it is then update
+
+
+userInfo matching query does not exist.
+False
+userInfo matching query does not exist.
+
+
 IDEAS
 _______________________________________________________
 -program will load and save a file that will have all of this information.
@@ -221,16 +247,9 @@ _______________________________________________________
 -restructure our models so that we have a google calendar class that we call, instead of all of these methods
 -pull in the timezone from the user and adjust the clock for that
 -move timezone factor into a constants file (like extratime in models.py)
--move data onto our own database (knight names, their info, etc)
--figure out how google tocken.pickles work like that back of your hand
 
--only support a 30 day window for analytics, calednar events, etc...
 -figure out if the user has logged in with us before, and if they have not, ask them
 to authenticate with google.
--get the google email the user is on when they visit the website (this might just be a cookie that we need to store)
-
--is the token.pickle that we hand to google calendar the same token that we get from a user signing onto their google account
--add more scopes from https://developers.google.com/calendar/auth
 
 -figure out something to do when a user fails sign in. what happens?
 	-send something to the backend or what?
@@ -267,6 +286,15 @@ _______________________________________________________
 -add meeting length
 	-dont need this anymore
 -figure out a way to serve token.pickle request page to the user
+-move data onto our own database (knight names, their info, etc)
+-only support a 30 day window for analytics, calednar events, etc...
+-figure out how google tocken.pickles work like that back of your hand
+-is the token.pickle that we hand to google calendar the same token that we get from a user signing onto their google account
+-add more scopes from https://developers.google.com/calendar/auth
+-get the google email the user is on when they visit the website (this might just be a cookie that we need to store)
+
+
+
 
 QUESTIONS
 _______________________________________________________
