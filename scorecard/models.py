@@ -2,6 +2,8 @@ from django.db import models
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
+from googleapiclient.errors import HttpError
+import google.oauth2.credentials
 import datetime
 import os.path
 import pickle
@@ -31,56 +33,13 @@ def fillWriteTemplate(title,description,start_time,end_time):
 
     return event
 
-
-def getCredentials():
-
-    SCOPES = ['https://www.googleapis.com/auth/calendar.events']
-    creds = None
-    # The file token.pickle stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
-    if os.path.exists('token.pickle'):
-        with open('token.pickle', 'rb') as token:
-            creds = pickle.load(token)
-    # If there are no (valid) credentials available, let the user log in.
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', SCOPES)
-            creds = flow.run_local_server()
-        # Save the credentials for the next run
-        with open('token.pickle', 'wb') as token:
-            pickle.dump(creds, token)
-
-    return creds
-
-# Create your models here.
-def postToCal(formData):
-
-    #variables
-    start_time = expandTime(formData["date"],formData["time"])
-    end_time = expandTime(formData["date"],"17:30") #this is going to have to change/be more dynamic
-    title = formData['knight'] + " Meeting with " + formData['client_name']
-    description = formData['client_details']
-
-    #create the service
-    creds = getCredentials()
-    service = build('calendar', 'v3', credentials=creds)
-
-    #execute the calendar event
-    event = fillWriteTemplate(title,description,start_time,end_time)
-    event = service.events().insert(calendarId='stainless809@gmail.com', body=event).execute()
-
-    if(event['status']=='confirmed'):
-        return True
-    else:
-        return False
-
-
-def getCalendarData(name,sdate,edate):
+def getCalendarData(email,token, search,sdate,edate):
     
+    #sanity check
+    if(token==""):
+        return
+
+
     #form the start date
     sdatetime = sdate.split(' ')
     sdate = sdatetime[0]
@@ -94,26 +53,58 @@ def getCalendarData(name,sdate,edate):
     end_time = expandTime(edate,etime)
 
     #create service
-    creds = getCredentials()
+    creds = google.oauth2.credentials.Credentials(token)
     service = build('calendar', 'v3', credentials=creds)
 
     #execute the get from Google
     events_data = []
     page_token = None
     while True:
-        events = service.events().list(calendarId='stainless809@gmail.com', q=name, timeMin=start_time, timeMax=end_time, pageToken=page_token).execute()
-        events_data.extend(events['items'])
-        page_token = events.get('nextPageToken')
+
+        try:
+            events = service.events().list(calendarId=email, q=search, timeMin=start_time, timeMax=end_time, pageToken=page_token, singleEvents=True).execute()
+            events_data.extend(events['items'])
+            page_token = events.get('nextPageToken')
+        except HttpError as err:
+            print("Error requesting metrics from calendar")
+            break
+
         if not page_token:
             break
 
     return events_data
 
-    
+#keeps track of the knights
+class userInfo(models.Model):
+    gid = models.CharField(max_length=63)
+    access_token = models.CharField(max_length=4095)
+    expires_at = models.CharField(max_length=63)
+    name = models.CharField(max_length=63)
+    email = models.CharField(max_length=511)
+
+    def __str__(self):
+        return self.gid
+
+    def dict(self):
+        return {
+            "gid": self.gid,
+            "access_token": self.access_token,
+            "expires_at": self.expires_at,
+            "name": self.name,
+            "email": self.email
+        }
+
+#keeps track of the user's on the website
 class knightInfo(models.Model):
-    pid = models.IntegerField()
     name = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.pid
+        return self.name
+
+    def dict(self):
+        return{
+            "name" : self.name,
+            "email": self.email
+        }
+    

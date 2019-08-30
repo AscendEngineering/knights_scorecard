@@ -5,7 +5,11 @@ from django.conf import settings
 from .views import *
 
 urlpatterns = [
-    path('', mainPage, name="mainPage"),
-    path('knight/', knightsPage, name="knightsPage"),
-    path('metrics/', getMetrics, name='getMetrics')
+    path('',splashPage,name="splashPage"),
+    path('main/', mainPage, name="mainPage"),
+    path('main/knight/', knightsPage, name="knightsPage"),
+    path('metrics/', getMetrics, name='getMetrics'),
+    path('authenticate',authenticateUser,name='authenticateUser'),
+    path('authorize',authorizeUser,name='authorizeUser'),
+    path('knightList',getKnights,name='getKnights'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

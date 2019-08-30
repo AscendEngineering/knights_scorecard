@@ -68,20 +68,6 @@ the name is because it is in the javascript. lets try to see if we can change th
 -so we need to build a dictionary, this is a lot of work to be doing on the loading of a webpage. then again, we are only grabbing 
 the last 30 days, so yeah lets keep doing this on the fly
 
-
-
-IDEAS
-_______________________________________________________
--program will load and save a file that will have all of this information.
-	-in this way we won't have to worry about the program pulling data from a server or a computer crashing and losing all data
-	-the responsibility of keeping that file safe will be on the user
--dont want to make too complex, but it would be nice to integrate with current invoicing
-
-
-
-
-TODO
-_______________________________________________________
 -apis
 	-our server
 		-getPredictedIncome
@@ -100,19 +86,231 @@ _______________________________________________________
 		-addFutureMeeting
 			-parameters: json of event details
 
+-so what is the next step? dissecting these calednar events
+-the first thing that we have to really worry about is, how are we 
+going to differentiate between a regular calnedar event and the ones
+set up by HEctor. lets just assume all have the (VM Reminder) on them
+
+-so we are assuming that is the case now. now, the next thing that we have to worry about is authentication
+-we are going to need this token.pickle. so lets set up a database so that we can properly get the token of
+whoever is using the app. so we need to detect when we have a new user and then ask them to sign in to goolge
+so we can grab the token that we need, but we do need to serve it up in the first place
+
+-so how are we going to authenticate with a user
+-we could have a landing page where we just ask the user to sign in with google,
+and from there we might be able to keep the token
+
+-I wonder if we can take the same token that we ask from the user to sign in to request 
+events from calednars
+
+-so how can I find if one token will lead to another??? well, it does not seem like Google is making 
+that info readily avaible. mostly it just seems like you can use google to get a user's information, and
+not anything that might allow you to access their google calendar. i believe they have to separatly allow
+you to do that. But, we can add some verfication. Like a landing page that verfiifes that it is Hector or whatever
+
+-but lets worry about that later.
+-what about a button in the upper right hand corner of the page that says authenticate. well, what we can 
+also do is create that landing page, and then we know who is logged in. and from there we know where to grab that 
+token
+
+-okay cool. so lets work on that
+-the first thing that we are going to need to do is make a landing page. which will just be the page that 
+sends the user's info to the backend. then we will see if the user's email is in the whitelist
+-so that is what we are working on right now. web page that will verify with the backend that the user is allowed to be on the site
+-so we are also going to need a folder to store these tokens. because our backend is going to detect if we have a token for the user, and then go from there
+
+-I think it will only be the id that we need. yeah store the id. so we dont even need to hash it
+
+-so I do need to think of a way that I can make these requests from ym server. meaning...How do I get the token 
+back from the user...wait...what is returned when I sign on with the additional scopes?
+
+-so it is going to be the access token that we are going to store. 
+-and then we can use that later. Shit, we probably don't even need to store this token as a 
+file. we can probably just insert it into the request
 
 
--need to create landing page that will allow us to save user's google key (like postman did. we signed in with Google)
--make sure that the height of our columns stay within the bounds of the window. we do not want to scroll to see these items
+-so this seems to be going well. so the next step is to save the shit in the database
+-so I am not 100p sure here, but it does seem like I should make some type of class that 
+does interface with the db, especially since the database can throw errors
+-we want to be able to catch those errors and respond accordingly, mainly with empty
+strings or None....None will probably be better. that is a little more explicit
+-but baseline, we do want to have a wrapper class. Yeah, that sounds like a smart idea
+
+-so we dont really need the authentication page anymore. if something is wrong with the
+form that we got from the login page, that is where we need to reject them. I guess reject them
+with an alert that they can not sign in. that they can not. so if we are going to reject them
+that just sounds like an http 300 response
+
+-alright, so now we are dealing with sessions. So, we have just logged someone into a session correct?
+-so it does seem like we are good on the sessions.
+-so now we just need to figure out how to form a credential with just the tokenid, or the saved token
+really
+
+-so the idea is that you will send in a request, and then just tell the sessionManager what to do
+-so, for example, sendin the session managher a request in teh constructor, and then give it a key
+and a value to set, and in the session Manager we will just compensate for errors and such.
+so it would just be a get and set, butit would return "" or None if nothing is set, instead of 
+throwing an error
+
+-so now we just have to test whether these tokens are actually correct. can we actually get access
+to others accounts by just that tokenid....which is ugh....pretty hopeful I guess.
+-might have wanted to do some research before this tbh, but whatever
+
+-looks good big boy. so what is going to need to happen next is that I need to test that
+stainless809 can access wilkinsaf and wilkinsdev. which means that we are going to need to 
+create these userInfo. which means...ugh how are we fucking going to create these....??? I
+guess what we can do is store their emails or something. yeah we really dont need permissions
+from them, just the emails. we will have to put the test cases in manually, just create a 
+test case or something, some other file. that makes sense
+
+-then we see if we can access their google calendar's.
+-alright im tired. night. 
+
+-yeah so I guess the next thing is just to see if we can access another user's google calendar
+with the token that we have. right, because we were granted certain permissions to see their
+calednar
+-we need to do this by assigning the right email addresses to the client list that we have
+-so which email are we granted for rn: stainless809
+-so we need to give access in our wilkinsaf and our dev account
+	-then we need to have those emails as users right.....fuck we messed these tables up
+	-our knights are supposed to be the info, and our users are supposed to be the users of the app.
+	-shit. okay, reset the tables. well its not only that, we have to change code
+
+-perfect, that change took like 5 seconds. okay, now we need to find a way to load the knights into 
+the database. now....should we make a specific tool to do this on the...no
+	-load it up each time we run the server
+	-manually add it in with sql
+	-manually add it in with a script that we have
+		-how hard will this be? would we need to load django to do this..??? probably
+
+
+-so not only do we need to link the gmails, but we need to show the knights calendar in the code
+-so we have the permissions, but now we need to pull up the right calednar
+
+-lol I need to pull the list from the sevrer and then go from there, because right now we are not even getting a list
+
+-okay, so now I need to think about refresh the tokens....fuck. I need to add support for this earlier
+on...Shouldnt we catch the refresh before??? Also 
+
+-okay so for some reason it doesnt l
+-so now we are going to need to figure out uugghhh how we are going to request the email right??
+-well we will pass in the name to the server and ask for a lookup I guess, which is not great tbh.
+ideally it should be a guid, but for now...whatever
+
+-so now we want to get the email...
+-alright, so how are we going to request the metrics just for 
+
+-so I guess we need to refresh the token. But how are we going to do that???
+-dont we have some logicals somewhere. I know we have some logicals to reject if a token is expired
+yeah where is that
+
+-well, maybe we shouldnt be so worried about this, and be more concerned about how to refresh a token when 
+it is done and google will not accept it. might be a good idea
+
+-so I probabhly need to build the request with additional arguments for the credentials
+	-but the question now is, what fields do we have to enter, and more over how do we actually get
+	those fields
+
+-yeah, so I am going to need a refresh token somehow
+-I am thinking that there is no refresh token for javascript applications
+-so, how do we request on python...?????
+-well it seems that our expired method doesnt work. so if we make that work then
+we should be fine. because we'll be granted a new access token everytime.
+
+-so we do need to wait for that token to expire I guess....well no, we can change it in the db
+-so what happened, is when we called the new user function we overwrote what was there before
+-lets not do that, there must be some way to create if its not there and if it is then update
+
+
+userInfo matching query does not exist.
+False
+userInfo matching query does not exist.
+
+-so now we actually need to pull the metrics and 
+-actually, what I want to do is create a script that will load the csv of the clients into the 
+app. that shouldn't be that crazy hard
+
+-so I am going to have to make it so that we are relating knights differently now, we are going
+to have to pass in a id to the frontend and then pass that to the backend to relate it
+
+-alright, so we have to think about how to search up these names with spaces. like some delimeter or something
+-...I can not think about how we can manually do this
+
+-a queryset needs to be implemented probably
+-so I need to think about what I want to do. do I want to pass these gid
+-or we can fuck around with these querysets
+
+-alright, so I guess that that worked
+-so now we have to work on the analytics
+-so we are going to need to start doing teh analutics
+-oh, I should get each of the analytics
+
+
+IDEAS
+_______________________________________________________
+-program will load and save a file that will have all of this information.
+	-in this way we won't have to worry about the program pulling data from a server or a computer crashing and losing all data
+	-the responsibility of keeping that file safe will be on the user
+-dont want to make too complex, but it would be nice to integrate with current invoicing
+
+
+
+
+TODO
+_______________________________________________________
+
+
 -figure out why we have a horizontal scroll at the bottom....no matter what we seem to do
--make sure that modal closes after we submit it
--add meeting length
--figure out a way to serve token.pickle request page to the user
--make sure our timezones change appropriatly
 -restructure our models so that we have a google calendar class that we call, instead of all of these methods
 -pull in the timezone from the user and adjust the clock for that
 -move timezone factor into a constants file (like extratime in models.py)
+-keep a session alive for the user
+-make a signoout button
+-expand to_gcal_url in tools.py to include timezone as well
+-figure out how to get metrics for all knights
+-split index.html and knights.html into 2
+-add in some type of logging
+-make sure the Knights list is sorted alphabetically
+
+DONE
+_______________________________________________________
+-make sure that the height of our columns stay within the bounds of the window. we do not want to scroll to see these items
+-make sure that modal closes after we submit it
+-add meeting length
+	-dont need this anymore
+-figure out a way to serve token.pickle request page to the user
 -move data onto our own database (knight names, their info, etc)
+-only support a 30 day window for analytics, calednar events, etc...
+-figure out how google tocken.pickles work like that back of your hand
+-is the token.pickle that we hand to google calendar the same token that we get from a user signing onto their google account
+-add more scopes from https://developers.google.com/calendar/auth
+-get the google email the user is on when they visit the website (this might just be a cookie that we need to store)
+-need to create landing page that will allow us to save user's google key (like postman did. we signed in with Google)
+-figure out if the user has logged in with us before, and if they have not, ask them
+to authenticate with google.
+-figure out something to do when a user fails sign in. what happens?
+	-send something to the backend or what?
+-break getPastDates and getFutureDates into a separate file
+-create a sessions file that will handle things for the session
+-seems we are having trouble just after assigning the user session gid
+	[25/Aug/2019 15:09:15] "GET /main/knight/?name=Felix HTTP/1.1" 200 2884
+	Error finding user session value gid
+	no gid
+	Unauthorized: /metrics/
+	[25/Aug/2019 15:09:16] "GET /metrics/?days_ago=30&metrics=&name=Felix HTTP/1.1" 401 0
+	Error finding user session value gid
+	no gid
+	Unauthorized: /metrics/
+	[25/Aug/2019 15:09:19] "GET /metrics/?days_ago=30&metrics= HTTP/1.1" 401 0
+
+	-but we are not having issues the second time that we request from the site
+-change it so that we are sending a uid instead of a name when requesting users
+	-we fixed this so we are looking at first names and last names
+	-good enough for now
+
+
+
+
 
 
 QUESTIONS
@@ -155,6 +353,71 @@ _______________________________________________________
 		the get request
 
 -connecting nginx to django: https://uwsgi-docs.readthedocs.io/en/latest/tutorials/Django_and_nginx.html
+
+-google api credentials: https://console.developers.google.com/apis/credentials?project=quickstart-1552389800244
+
+-how Google authentication works: https://developers.google.com/identity/protocols/OAuth2
+
+-here are the two connections between signing in and the permissions I need for calendar
+	-https://developers.google.com/identity/sign-in/web/incremental-auth
+	-https://developers.google.com/identity/protocols/OAuth2WebServer
+
+-this is the url to hit: http://127.0.0.1.xip.io:8000
+
+-drop all tables: python manage.py sqlflush
+
+-json that is returned by our profile and scope request from google
+	{
+	"message": "success",
+	"value": {
+		"El": "104667386943722742631",
+		"Zi": {
+		"token_type": "Bearer",
+		"access_token": "ya29.GltlB4Njt5GVBLJ4YQeIORRlgpDzoAVLqGoaiPPvFvK7DomvTgXZTRWW0KSS5RBX9smbv3QGbTiSFAegjf-3lxxYcOnKVOPV_ZA-qOdPsOiZtzpzN1Xqbgqy9aIm",
+		"scope": "email profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/userinfo.profile openid https://www.googleapis.com/auth/calendar.readonly",
+		"login_hint": "AJDLj6JPqyPzCmrp9ZPwxUbM4ItYxb_GGMylFUzhPH57OwKZ2RHhPeeRO9STvfS7ze_N_zZanXBBs53IoqIruo7A1ZrNfIvnYDqyPglcwI4LmPFYFvgkFw0",
+		"expires_in": 3600,
+		"id_token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjYwZjQwNjBlNThkNzVmZDNmNzBiZWZmODhjNzk0YTc3NTMyN2FhMzEiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiMTI0NjMzMzA3NTk3LXMxaWkyZmFydG51cHI4cXV0OGozYnVyZ3IwYTZ1ZnB1LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiMTI0NjMzMzA3NTk3LXMxaWkyZmFydG51cHI4cXV0OGozYnVyZ3IwYTZ1ZnB1LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTA0NjY3Mzg2OTQzNzIyNzQyNjMxIiwiZW1haWwiOiJzdGFpbmxlc3M4MDlAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiI0dHFrMlRGZEtzT1RSVmJaUHNMY3ZRIiwibmFtZSI6IkFuZHJldyBXaWxraW5zIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hLS9BQXVFN21BYnhGNk11aGR1SXI4ZG9kM3prMURVeGt3TmU1MDB6RzljR25vNT1zOTYtYyIsImdpdmVuX25hbWUiOiJBbmRyZXciLCJmYW1pbHlfbmFtZSI6IldpbGtpbnMiLCJsb2NhbGUiOiJlbiIsImlhdCI6MTU2NTgzOTE0OSwiZXhwIjoxNTY1ODQyNzQ5LCJqdGkiOiIzZTYzOTMwNmE1YmU4YmY1MjY4ZTFlZWNjYzAzMjM2YWQ5MDNmODNmIn0.MaQIuk6GtAygN59KgLLITVHzVzFtYu4MX_tXaC-zGC3LbaseK-V0sIPhmYKuFGIM2gxUMndj_PKTIvS2c_QO2wI3srdRjoMecj6HyvdcZj9Pe9uftNuAcAJ6TxOljr74nAXBAYrZmhU6356VwUYJF9w2YkXgsS4OecBcPEBgGk9RJPMmYs4G8Vnkp7oz9psj9FX3VXoe7iENMJGZ4jRw0o59R4fJ4BjfDVPNOpbIwpq4x6cuUiev6ntuauGBvOeBp-OP1rilv5VcmnXvB8giaasTeQXzzXagW9kFHE2CnqXYtj4juTYeIXZtWZ7eHoxGGvITfMJ0HaK9mnaXqU5XIg",
+		"session_state": {
+			"extraQueryParams": {
+			"authuser": "0"
+			}
+		},
+		"first_issued_at": 1565839149685,
+		"expires_at": 1565842749685,
+		"idpId": "google"
+		},
+		"w3": {
+		"Eea": "104667386943722742631",
+		"ig": "Andrew Wilkins",
+		"ofa": "Andrew",
+		"wea": "Wilkins",
+		"Paa": "https://lh3.googleusercontent.com/a-/AAuE7mAbxF6MuhduIr8dod3zk1DUxkwNe500zG9cGno5=s96-c",
+		"U3": "stainless809@gmail.com"
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
