@@ -27,6 +27,7 @@ def knightsPage(request):
 
         #get the email
         email = knight(name).get("email")
+        print(get_gcal_url(email))
 
         context = {"name": name, "email": get_gcal_url(email)}
         return render(request, 'knights.html',context)
@@ -44,8 +45,9 @@ def getKnights(request):
         allknights = knightInfo.objects.all()
         for knight in allknights:
             retVal.append(knight.name)
-    except:
+    except AttributeError as err:
         print("Error Accessing Knights emails")
+        print(err)
 
     return(JsonResponse({"knights":retVal}))
 
@@ -54,6 +56,7 @@ def getMetrics(request):
 
     days = request.GET.get('days_ago','0')
     name = request.GET.get('name','')
+    metric = request.GET.get('metric','')
     current_gid = session(request).get("gid")
 
     #make sure gid exists
@@ -77,18 +80,18 @@ def getMetrics(request):
 
     #get past events
     sdate,edate = getPastDates(int(days))
-    pastEvents = getCalendarData(knight_email,current_token,"Krav", sdate,edate)
+    pastEvents = getCalendarData(knight_email,current_token,metric, sdate,edate)
 
     #get future events
     sdate,edate = getFutureDates(int(days))
-    futureEvents = getCalendarData(knight_email,current_token,"Krav", sdate,edate)
+    futureEvents = getCalendarData(knight_email,current_token,metric, sdate,edate)
 
     #run the data through metrics processor
 
 
     #form response json
     retVal = {
-        "Days": days, 
+        "Meeting": metric, 
         "Past Meetings": str(len(pastEvents)),
         "Future Meetings": str(len(futureEvents))
     }

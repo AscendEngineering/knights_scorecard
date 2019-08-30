@@ -2,7 +2,7 @@ var app = new Vue({
   el: '#app',
   data: {
       message: 'Hello Vue!',
-      fields: ["Days", "Past Meetings", "Future Meetings"],
+      fields: ["Meeting", "Past Meetings", "Future Meetings"],
       items: [],
       knights: [],
       filter: "",
@@ -22,14 +22,14 @@ var app = new Vue({
       },
  
 
-      request_metrics: function(days_ago,metrics){
+      request_metrics: function(days_ago,metric){
 
         //grab username
         var url = new URL(window.location.href);
         var name = url.searchParams.get("name");
 
         //create the json with the days ago, metrics, and username
-        data = {"days_ago": days_ago, "metrics": metrics, "name": name};
+        data = {"days_ago": days_ago, "metric": metric, "name": name};
 
         //send to the current url
         axios.get('/metrics',{
@@ -63,7 +63,11 @@ var app = new Vue({
   },
   mounted: function() {
     if(window.location.href.includes("name")){
-      this.request_metrics(30,"");
+      this.request_metrics(30,"Associate");
+      this.request_metrics(30,"Insured ");
+      this.request_metrics(30,"Postponed");
+      this.request_metrics(30,"Cancelled");
+      
     }
     else{
       this.request_knights();

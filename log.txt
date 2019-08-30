@@ -230,6 +230,21 @@ userInfo matching query does not exist.
 -actually, what I want to do is create a script that will load the csv of the clients into the 
 app. that shouldn't be that crazy hard
 
+-so I am going to have to make it so that we are relating knights differently now, we are going
+to have to pass in a id to the frontend and then pass that to the backend to relate it
+
+-alright, so we have to think about how to search up these names with spaces. like some delimeter or something
+-...I can not think about how we can manually do this
+
+-a queryset needs to be implemented probably
+-so I need to think about what I want to do. do I want to pass these gid
+-or we can fuck around with these querysets
+
+-alright, so I guess that that worked
+-so now we have to work on the analytics
+-so we are going to need to start doing teh analutics
+-oh, I should get each of the analytics
+
 
 IDEAS
 _______________________________________________________
@@ -244,46 +259,18 @@ _______________________________________________________
 TODO
 _______________________________________________________
 
--need to create landing page that will allow us to save user's google key (like postman did. we signed in with Google)
 
 -figure out why we have a horizontal scroll at the bottom....no matter what we seem to do
-
 -restructure our models so that we have a google calendar class that we call, instead of all of these methods
 -pull in the timezone from the user and adjust the clock for that
 -move timezone factor into a constants file (like extratime in models.py)
-
--figure out if the user has logged in with us before, and if they have not, ask them
-to authenticate with google.
-
--figure out something to do when a user fails sign in. what happens?
-	-send something to the backend or what?
-
 -keep a session alive for the user
 -make a signoout button
-
--break getPastDates and getFutureDates into a separate file
--create a sessions file that will handle things for the session
-
--seems we are having trouble just after assigning the user session gid
-	[25/Aug/2019 15:09:15] "GET /main/knight/?name=Felix HTTP/1.1" 200 2884
-	Error finding user session value gid
-	no gid
-	Unauthorized: /metrics/
-	[25/Aug/2019 15:09:16] "GET /metrics/?days_ago=30&metrics=&name=Felix HTTP/1.1" 401 0
-	Error finding user session value gid
-	no gid
-	Unauthorized: /metrics/
-	[25/Aug/2019 15:09:19] "GET /metrics/?days_ago=30&metrics= HTTP/1.1" 401 0
-
-	-but we are not having issues the second time that we request from the site
-
-
--change it so that we are sending a uid instead of a name when requesting users
 -expand to_gcal_url in tools.py to include timezone as well
 -figure out how to get metrics for all knights
 -split index.html and knights.html into 2
-
 -add in some type of logging
+-make sure the Knights list is sorted alphabetically
 
 DONE
 _______________________________________________________
@@ -298,6 +285,30 @@ _______________________________________________________
 -is the token.pickle that we hand to google calendar the same token that we get from a user signing onto their google account
 -add more scopes from https://developers.google.com/calendar/auth
 -get the google email the user is on when they visit the website (this might just be a cookie that we need to store)
+-need to create landing page that will allow us to save user's google key (like postman did. we signed in with Google)
+-figure out if the user has logged in with us before, and if they have not, ask them
+to authenticate with google.
+-figure out something to do when a user fails sign in. what happens?
+	-send something to the backend or what?
+-break getPastDates and getFutureDates into a separate file
+-create a sessions file that will handle things for the session
+-seems we are having trouble just after assigning the user session gid
+	[25/Aug/2019 15:09:15] "GET /main/knight/?name=Felix HTTP/1.1" 200 2884
+	Error finding user session value gid
+	no gid
+	Unauthorized: /metrics/
+	[25/Aug/2019 15:09:16] "GET /metrics/?days_ago=30&metrics=&name=Felix HTTP/1.1" 401 0
+	Error finding user session value gid
+	no gid
+	Unauthorized: /metrics/
+	[25/Aug/2019 15:09:19] "GET /metrics/?days_ago=30&metrics= HTTP/1.1" 401 0
+
+	-but we are not having issues the second time that we request from the site
+-change it so that we are sending a uid instead of a name when requesting users
+	-we fixed this so we are looking at first names and last names
+	-good enough for now
+
+
 
 
 

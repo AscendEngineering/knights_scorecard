@@ -100,9 +100,12 @@ class knight():
     #get_all - get all fields
     def get_all(self):
         try:
-            knight=knightInfo.objects.get(name=self.name).dict()
+            #split into first and last
+            firstname = self.name.split(' ')[0]
+            lastname = self.name.split(' ')[1]
+            knight=knightInfo.objects.all().filter(name__icontains=firstname).get(name__icontains=lastname).dict()
             return knight
-        except knightInfo.DoesNotExist as err:
+        except knightInfo.DoesNotExist as err:  
             print(err)
             return None
 

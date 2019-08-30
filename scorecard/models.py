@@ -96,17 +96,15 @@ class userInfo(models.Model):
 
 #keeps track of the user's on the website
 class knightInfo(models.Model):
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.gid
+        return self.name
 
     def dict(self):
         return{
-            "first_name" : self.first_name,
-            "last_name" : self.last_name,
+            "name" : self.name,
             "email": self.email
         }
     
