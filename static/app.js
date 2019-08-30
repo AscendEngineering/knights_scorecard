@@ -2,46 +2,9 @@ var app = new Vue({
   el: '#app',
   data: {
       message: 'Hello Vue!',
-      fields: ["Days", "Past Meetings", "Future Meetings"],
+      fields: ["Meeting", "Past Meetings", "Future Meetings"],
       items: [],
-      knights: [
-        {"Knight":"Felix"},
-        {"Knight":"Konnor"},
-        {"Knight":"Jeffrey"},
-        {"Knight":"Kaila"},
-        {"Knight":"Danica"},
-        {"Knight":"Sincere"},
-        {"Knight":"Elianna"},
-        {"Knight":"Justine"},
-        {"Knight":"Paris"},
-        {"Knight":"Maria"},
-        {"Knight":"Annika"},
-        {"Knight":"Dulce"},
-        {"Knight":"Axel"},
-        {"Knight":"Jaelyn"},
-        {"Knight":"Brice"},
-        {"Knight":"Leila"},
-        {"Knight":"Tamara"},
-        {"Knight":"Luke"},
-        {"Knight":"Trenton"},
-        {"Knight":"Ronnie"},
-        {"Knight":"Paula"},
-        {"Knight":"Deanna"},
-        {"Knight":"Sydney"},
-        {"Knight":"Riley"},
-        {"Knight":"Houston"},
-        {"Knight":"Clarissa"},
-        {"Knight":"Aryanna"},
-        {"Knight":"Sloane"},
-        {"Knight":"Trinity"},
-        {"Knight":"Karley"}
-      ],
-      form: {
-        "client_name": "",
-        "client_details": "",
-        "date": "",
-        "time": ""
-      },
+      knights: [],
       filter: "",
       sortBy: "Days",
       currentKnight:""
@@ -57,35 +20,16 @@ var app = new Vue({
         console.log(knight_url);
         window.location.href=knight_url;
       },
-      new_meeting: function(event){
-        
-        var url = new URL(window.location.href);
-        var name = url.searchParams.get("name");
-        data_req = this.form;
-        data_req["knight"] = name;
+ 
 
-        //send axios request
-        axios.post('',data_req)
-          .then(function(response){
-            console.log("sent");
-          })
-          .catch(function(response){
-            console.log(response);
-          });
-
-          //refresh
-          location.reload(false);
-
-      },
-
-      request_metrics: function(days_ago,metrics){
+      request_metrics: function(days_ago,metric){
 
         //grab username
         var url = new URL(window.location.href);
         var name = url.searchParams.get("name");
 
         //create the json with the days ago, metrics, and username
-        data = {"days_ago": days_ago, "metrics": metrics, "name": name};
+        data = {"days_ago": days_ago, "metric": metric, "name": name};
 
         //send to the current url
         axios.get('/metrics',{
@@ -99,14 +43,36 @@ var app = new Vue({
           })
 
       },
+
+      request_knights: function(){
+        
+        this.knights = [];
+
+        axios.get('/knightList').then((response) => {
+
+          //add knights onto the list
+          var knightList = response.data["knights"];
+          for(i=0; i<knightList.length;i++){
+            this.knights.push({"Knight": knightList[i]});
+          }
+        })
+
+
+      }
+
   },
   mounted: function() {
-    this.request_metrics(1,"");
-    this.request_metrics(7,"");
-    this.request_metrics(30,"");
-    this.request_metrics(365,"");
+    if(window.location.href.includes("name")){
+      this.request_metrics(30,"Associate");
+      this.request_metrics(30,"Insured ");
+      this.request_metrics(30,"Postponed");
+      this.request_metrics(30,"Cancelled");
+      
+    }
+    else{
+      this.request_knights();
+    }
     
-
   }
 });
 

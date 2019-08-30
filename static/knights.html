@@ -28,12 +28,12 @@
   <body>
     <div id="app" >
     <b-row>
-        <h1 class="m-5"> <a style="text-decoration:none;color: black" href='/'>Home</a> | {{ name }}</h1>
-        <b-button v-b-modal.modal-1 class="m-5">Add Meeting</b-button>
+        <h1 class="m-5"> <a style="text-decoration:none;color: black" href='/main'>Home</a> | {{ name }}</h1>
+        <!-- <b-button v-b-modal.modal-1 class="m-5">Add Meeting</b-button> -->
     </b-row>
     <b-row>
         <b-col>
-            <iframe class="m-5" src="https://calendar.google.com/calendar/embed?src=stainless809%40gmail.com&ctz=America%2FChicago" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+            <iframe class="m-5" src={{ email }} style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
         </b-col>    
         <b-col>
             <b-table 
@@ -47,7 +47,7 @@
         </b-col> 
     </b-row>
 
-    <div>
+    <!-- <div>
         <b-modal 
         id="modal-1"
         title="Add Meeting"
@@ -65,7 +65,7 @@
             </b-form-group>
             </form>
         </b-modal>
-    </div>
+    </div> -->
         
     </div>
     
