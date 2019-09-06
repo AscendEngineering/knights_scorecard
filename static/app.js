@@ -54,29 +54,34 @@ var app = new Vue({
         })
 
 
+      },
+
+      request_all_metrics: function(event){
+        this.items = [];
+        this.request_metrics("all",30,"Associate");
+        this.request_metrics("all",30,"Insured");
+        this.request_metrics("all",30,"Postponed");
+        this.request_metrics("all",30,"Cancelled");
       }
 
   },
   mounted: function() {
-    var name = "";
-
     if(window.location.href.includes("name")){
       
       //grab username
       var url = new URL(window.location.href);
-      name = url.searchParams.get("name");
+      var name = url.searchParams.get("name");
+
+      //request the metric
+      this.request_metrics(name,30,"Associate");
+      this.request_metrics(name,30,"Insured");
+      this.request_metrics(name,30,"Postponed");
+      this.request_metrics(name,30,"Cancelled");
       
     }
     else{
       this.request_knights();
-      name="all";
     }
-
-    //request the metric
-    this.request_metrics(name,30,"Associate");
-    this.request_metrics(name,30,"Insured");
-    this.request_metrics(name,30,"Postponed");
-    this.request_metrics(name,30,"Cancelled");
     
   }
 });

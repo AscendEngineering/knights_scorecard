@@ -44,7 +44,10 @@
           </b-col>
 
           <b-col class="m-3">
-            <h1>Total Metrics</h1>
+            <b-row>
+              <h1>Total Metrics</h1>
+              <b-button @click="request_all_metrics" class="ml-3">Get Metrics</b-button>
+            </b-row>
             <b-table 
               striped 
               bordered
