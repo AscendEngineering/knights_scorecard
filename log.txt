@@ -245,13 +245,20 @@ to have to pass in a id to the frontend and then pass that to the backend to rel
 -so we are going to need to start doing teh analutics
 -oh, I should get each of the analytics
 
+details: "Not a valid origin for the client: http://valutaholdings.duckdns.org:1666 has not been whitelisted for client ID 124633307597-s1ii2fartnupr8qut8j3burgr0a6ufpu.apps.googleusercontent.com. Please go to https://console.developers.google.com/ and whitelist this origin for your project's client ID."
+-alright, so what is the next step, probably generating metrics for combined. So, we are going to 
+need to go to a new page, and have it load metrics. have a button that will say, gather all 
+metrics. 
 
-IDEAS
-_______________________________________________________
--program will load and save a file that will have all of this information.
-	-in this way we won't have to worry about the program pulling data from a server or a computer crashing and losing all data
-	-the responsibility of keeping that file safe will be on the user
--dont want to make too complex, but it would be nice to integrate with current invoicing
+-so what is my next thing, I need to make a new page....actually I just need to make a button.
+-the button will request gradually fill up the Total Metrics tab off to the right
+that makes sense to me.
+-well...we just send out a request that will generate all the metrics on the backend...
+-I also need to create some test data
+-yeah so if I pass in 
+-so first thing is first,make the button
+-so now we need to create the test data. so we need to load up different things into
+our local sql database, and give permissions in google calendar
 
 
 
@@ -271,6 +278,7 @@ _______________________________________________________
 -split index.html and knights.html into 2
 -add in some type of logging
 -make sure the Knights list is sorted alphabetically
+-improve logging
 
 DONE
 _______________________________________________________
@@ -330,6 +338,11 @@ _______________________________________________________
 
 RESOURCES
 _______________________________________________________
+-to start server: 
+	-python manage.py makemiggrations
+	-python manage.py migrate
+	-python manage.py collectstatic
+	-uwsgi --socket :8001 --module knightsTracker.wsgi
 -Google calendar getAPI: https://developers.google.com/calendar/v3/reference/events/list
 -Google calendar postAPI: https://developers.google.com/calendar/v3/reference/events/insert
 	-https://www.googleapis.com/calendar/v3/calendars/calendarId/events

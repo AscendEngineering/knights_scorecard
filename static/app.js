@@ -22,11 +22,7 @@ var app = new Vue({
       },
  
 
-      request_metrics: function(days_ago,metric){
-
-        //grab username
-        var url = new URL(window.location.href);
-        var name = url.searchParams.get("name");
+      request_metrics: function(name,days_ago,metric){
 
         //create the json with the days ago, metrics, and username
         data = {"days_ago": days_ago, "metric": metric, "name": name};
@@ -62,16 +58,25 @@ var app = new Vue({
 
   },
   mounted: function() {
+    var name = "";
+
     if(window.location.href.includes("name")){
-      this.request_metrics(30,"Associate");
-      this.request_metrics(30,"Insured ");
-      this.request_metrics(30,"Postponed");
-      this.request_metrics(30,"Cancelled");
+      
+      //grab username
+      var url = new URL(window.location.href);
+      name = url.searchParams.get("name");
       
     }
     else{
       this.request_knights();
+      name="all";
     }
+
+    //request the metric
+    this.request_metrics(name,30,"Associate");
+    this.request_metrics(name,30,"Insured");
+    this.request_metrics(name,30,"Postponed");
+    this.request_metrics(name,30,"Cancelled");
     
   }
 });

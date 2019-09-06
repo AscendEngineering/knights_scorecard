@@ -66,6 +66,7 @@ def getCalendarData(email,token, search,sdate,edate):
             events_data.extend(events['items'])
             page_token = events.get('nextPageToken')
         except HttpError as err:
+            print(err)
             print("Error requesting metrics from calendar")
             break
 
@@ -73,6 +74,15 @@ def getCalendarData(email,token, search,sdate,edate):
             break
 
     return events_data
+
+
+def all_emails():
+    retVal = []
+    allKnightsInfo = knightInfo.objects.all()
+    for knight in allKnightsInfo:
+        retVal.append(knight.dict()["email"])
+    return retVal
+
 
 #keeps track of the knights
 class userInfo(models.Model):
