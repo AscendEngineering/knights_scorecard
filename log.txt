@@ -342,7 +342,7 @@ _______________________________________________________
 	-python manage.py makemiggrations
 	-python manage.py migrate
 	-python manage.py collectstatic
-	-uwsgi --socket :8001 --module knightsTracker.wsgi
+	-uwsgi --socket :8001 --module knightsTracker.wsgi (nohup uwsgi --socket :8001 --module knightsTracker.wsgi &)
 -Google calendar getAPI: https://developers.google.com/calendar/v3/reference/events/list
 -Google calendar postAPI: https://developers.google.com/calendar/v3/reference/events/insert
 	-https://www.googleapis.com/calendar/v3/calendars/calendarId/events
