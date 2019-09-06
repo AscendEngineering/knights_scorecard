@@ -76,24 +76,35 @@ def getMetrics(request):
 
 
     #select the matching knight
-    knight_email = knight(name).get("email")
+    knight_emails = []
+    if(name=="all"):
+        knight_emails = all_emails()
+    else:
+        knight_emails.append(knight(name).get("email"))
 
-    #get past events
-    sdate,edate = getPastDates(int(days))
-    pastEvents = getCalendarData(knight_email,current_token,metric, sdate,edate)
+    #variables
+    totalFutureEvents = 0
+    totalPastEvents = 0
 
-    #get future events
-    sdate,edate = getFutureDates(int(days))
-    futureEvents = getCalendarData(knight_email,current_token,metric, sdate,edate)
+    for email in knight_emails:
 
-    #run the data through metrics processor
+        #get past events
+        sdate,edate = getPastDates(int(days))
+        pastEvents = getCalendarData(email,current_token,metric, sdate,edate)
 
+        #get future events
+        sdate,edate = getFutureDates(int(days))
+        futureEvents = getCalendarData(email,current_token,metric, sdate,edate)
+
+        #run the data through metrics processor
+        totalPastEvents+=len(pastEvents)
+        totalFutureEvents+=len(futureEvents)
 
     #form response json
     retVal = {
         "Meeting": metric, 
-        "Past Meetings": str(len(pastEvents)),
-        "Future Meetings": str(len(futureEvents))
+        "Past Meetings": str(totalPastEvents),
+        "Future Meetings": str(totalPastEvents)
     }
 
     #return that json
