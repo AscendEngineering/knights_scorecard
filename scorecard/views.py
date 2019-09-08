@@ -126,26 +126,19 @@ def authenticateUser(request):
 
         if(current_user.exists() and (not current_user.token_expired())):
             session(request).set("gid",current_user.get("gid"))
+            
+        #store the client's credentials
+        succ = current_user.make(user_data)
+
+        if(succ):
+            session(request).set("gid",current_user.get("gid"))
             return HttpResponse("authorized")
         else:
-            #store the client's credentials
-            succ = current_user.make(user_data)
-
-            if(succ):
-                session(request).set("gid",current_user.get("gid"))
-                return HttpResponse("authorized")
-            else:
-                return HttpResponse(status=401)
+            return HttpResponse(status=401)
 
     
     else:
         return HttpResponse("Should be a POST method for authorization",status=500)
 
 
-@csrf_exempt
-def authorizeUser(request):
-    #serve up the webpage that will will tell the user to authenticate our services
-    print("TODO")
-
-    return HttpResponse("Need to authorize")
 

@@ -72,21 +72,21 @@
 
         user_data={}
         googleUser = auth2.currentUser.get();
-
-        console.log(googleUser);
+        //console.log(googleUser);
 
         googleUser.grant(options).then(
           function(success){
             //request was successful
             console.log("done granting");
-            console.log(googleUser);
+
             //package all the material
             user_data["gid"] = googleUser["El"];
             user_data["access_token"] = googleUser["Zi"]["access_token"];
             user_data["expires_at"] = googleUser["Zi"]["expires_at"];
             user_data["name"] = googleUser["w3"]["ig"];
             user_data["email"] = googleUser["w3"]["U3"];
-            //console.log(user_data);
+
+            console.log(user_data);
             postToBackend("/authenticate",user_data);
 
           },

@@ -3,11 +3,14 @@ var app = new Vue({
   data: {
       message: 'Hello Vue!',
       fields: ["Meeting", "Past Meetings", "Future Meetings"],
+      metrics: ["Associate","Insured","Postponed","Cancelled"],
       items: [],
       knights: [],
       filter: "",
       sortBy: "Days",
-      currentKnight:""
+      currentKnight:"",
+      hideLoading: true,
+      disableMetricsRequest: false
       
   },
   methods: {
@@ -33,10 +36,18 @@ var app = new Vue({
         })
           .then((response) => {
             this.items.push(response.data);
+
+            //hide loading icon
+            if(this.items.length == this.metrics.length){
+              this.hideLoading = true;
+              this.disableMetricsRequest = false;
+            }
+
           })
           .catch(function(response){
             console.log("failed");
           })
+
 
       },
 
@@ -58,10 +69,11 @@ var app = new Vue({
 
       request_all_metrics: function(event){
         this.items = [];
-        this.request_metrics("all",30,"Associate");
-        this.request_metrics("all",30,"Insured");
-        this.request_metrics("all",30,"Postponed");
-        this.request_metrics("all",30,"Cancelled");
+        this.hideLoading = false;
+        this.disableMetricsRequest = true;
+        this.metrics.forEach(element => {
+          this.request_metrics("all",30,element);
+        });
       }
 
   },
@@ -73,10 +85,9 @@ var app = new Vue({
       var name = url.searchParams.get("name");
 
       //request the metric
-      this.request_metrics(name,30,"Associate");
-      this.request_metrics(name,30,"Insured");
-      this.request_metrics(name,30,"Postponed");
-      this.request_metrics(name,30,"Cancelled");
+      this.metrics.forEach(element => {
+        this.request_metrics(name,30,element);
+      });
       
     }
     else{

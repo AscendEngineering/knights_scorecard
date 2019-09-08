@@ -46,7 +46,8 @@
           <b-col class="m-3">
             <b-row>
               <h1>Total Metrics</h1>
-              <b-button @click="request_all_metrics" class="ml-3">Get Metrics</b-button>
+              <b-button @click="request_all_metrics" :disabled="disableMetricsRequest" class="ml-3">Get Metrics</b-button>
+              <b-spinner variant="primary" label="Spinning" class="ml-3" :hidden="hideLoading"></b-spinner>
             </b-row>
             <b-table 
               striped 
