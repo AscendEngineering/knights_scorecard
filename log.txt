@@ -302,7 +302,8 @@ _______________________________________________________
 -make redirect with unauthorized access so the user knows why they are being logged out
 -figure out the error that occurs when we try to login with stainless809 and then wilkinsaf
 -why do we have to log on twice to get this shit to work
-
+-check if we our authorization token still works after an hour
+-ask hector for some money so that we can upgrade our hardware
 
 DONE
 _______________________________________________________

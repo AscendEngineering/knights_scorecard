@@ -130,7 +130,6 @@ def authenticateUser(request):
         return(HttpResponse(status=200))
     else:
         #if not logout and reject
-        #logout(request)
         return(redirect("/logout"))
 
     
