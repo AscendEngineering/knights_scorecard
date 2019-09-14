@@ -259,9 +259,23 @@ that makes sense to me.
 -so first thing is first,make the button
 -so now we need to create the test data. so we need to load up different things into
 our local sql database, and give permissions in google calendar
+-so what do i have to do next. I need to make a spinning loading icon for when we fetch the meterics
 
+-so now the big question is, how can i make it so that I can reauthorize everytime the token runs out 
+-so we can now get the access token, and I guess the email at will
+-so now what are we going to have to do. we 
+-so we are still working on this sign in/ signout thing. the cookies are taking care of it right...
+-well maybe we need to see if another link will log us out. maybe there is something about the request that
+can not log us out
 
-
+-I hit this url, and I get an HTTP 405
+-ok, so I guess we are going to need to figure out the sign out thing
+-it says this is forbidden. maybe we should allow the login, and then 
+- I am really unsure why this is not working. why I can n ot find a OP1rilv5VcmnXvB8giaasTeQXzzXagW9kFHE2CnqXYtj4juTYeIXZtWZ7eHoxGGvITfMJ0HaK9mnaXqU5XIgwhy is it that the exclamation mark is there
+-so it seems that we need to set a password somewhere
+-fuck this module, we are just going to delete the entry manually...wait...we will delete the 
+thing manually after we deactivate like we did before
+-yeah we might need to send back an authorized prompt before we try to access the site
 
 TODO
 _______________________________________________________
@@ -279,6 +293,16 @@ _______________________________________________________
 -add in some type of logging
 -make sure the Knights list is sorted alphabetically
 -improve logging
+-make a spinning logo icon when we fetch the metrics
+-make all webpages logon required
+	from django.contrib.auth.decorators import login_required
+-make sure you can only send requests (on the frontend) if you are a logged in user
+-make sure we make a logout button
+-integrate social_django with google calendar stuff: https://python-social-auth.readthedocs.io/en/latest/backends/google.html
+-make redirect with unauthorized access so the user knows why they are being logged out
+-figure out the error that occurs when we try to login with stainless809 and then wilkinsaf
+-why do we have to log on twice to get this shit to work
+
 
 DONE
 _______________________________________________________
@@ -483,3 +507,8 @@ _______________________________________________________
 -Do you care about logging when the meetings take place, or whether they actually occurred – We confirm every appointment the day prior and that has served as confirmation that the actual appointment occurred or will occur and is then deemed billable.
 
 -Do you want the scorecard to make predictions about how much you will earn in the future based on the values of the past? – Yes.
+
+
+
+
+
