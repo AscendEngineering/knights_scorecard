@@ -86,22 +86,18 @@ def all_emails():
 
 #keeps track of the knights
 class userInfo(models.Model):
-    gid = models.CharField(max_length=63)
-    access_token = models.CharField(max_length=4095)
-    expires_at = models.CharField(max_length=63)
     name = models.CharField(max_length=63)
     email = models.CharField(max_length=511)
+    timesLoggedIn = models.IntegerField()
 
     def __str__(self):
-        return self.gid
+        return self.dict()
 
     def dict(self):
         return {
-            "gid": self.gid,
-            "access_token": self.access_token,
-            "expires_at": self.expires_at,
             "name": self.name,
-            "email": self.email
+            "email": self.email,
+            "timesLoggedIn": self.timesLoggedIn
         }
 
 #keeps track of the user's on the website

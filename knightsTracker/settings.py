@@ -24,8 +24,8 @@ SECRET_KEY = '+1h17(i#xfo3ilyq&&x2p%&l7)$v21$_j_9b8c!j^#k*01*@-2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-CSRF_COOKIE_SECURE = False
-SESSION_COOKIE_SECURE = False
+#CSRF_COOKIE_SECURE = False
+#SESSION_COOKIE_SECURE = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'scorecard',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +51,25 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
+]
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+LOGIN_URL='/login'
+LOGIN_REDIRECT_URL='/main'
+LOGOUT_URL = '/logout'
+LOGOUT_REDIRECT_URL='/'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY ='124633307597-s1ii2fartnupr8qut8j3burgr0a6ufpu.apps.googleusercontent.com' 
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'SL9m9fBG_C-kyTRxr1FhDNcq'
+# Google OAuth2 (google-oauth2)
+SOCIAL_AUTH_GOOGLE_OAUTH2_IGNORE_DEFAULT_SCOPE = True
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile',
+    'https://www.googleapis.com/auth/calendar.events'
 ]
 
 ROOT_URLCONF = 'knightsTracker.urls'
@@ -65,6 +85,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },

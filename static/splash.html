@@ -9,8 +9,9 @@
   <body>
     <div id="center">
       <div id="main">
-        <h1>Sign In</h1>
-        <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+        <!-- <h1>Sign In</h1>
+        <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div> -->
+        <a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a><br>
       </div>
     </div>
     <style>
@@ -26,79 +27,7 @@
         font-family: 'Julius Sans One';
       }
 
-    
-    
     </style>
-
-
-    <script>
-      function postToBackend(url,data){
-        //send the data to our backend
-        console.log("sending to backend");
-
-        $.post(url, data ,function(){
-            console.log("Sent");
-        })
-        .done(function(resp){
-            console.log("Recieved");
-            if(resp=="authorized"){
-                window.location.href = "/main/";
-            }
-            else{
-                window.location.href = "/authorize";
-            }
-        })
-        .fail(function(){
-            console.log("Failed");
-            alert("401 Unauthorized");
-        })
-      }
-
-      function onSignIn(googleUser) {
-
-        // Useful data for your client-side scripts:
-        //var profile = googleUser.getBasicProfile();
-        auth2 = gapi.auth2.getAuthInstance({
-          client_id: '124633307597-s1ii2fartnupr8qut8j3burgr0a6ufpu.apps.googleusercontent.com',
-          cookiepolicy: 'single_host_origin', /** Default value **/
-          scope: 'profile',
-        });
-
-
-        //TODO: add more scopes from https://developers.google.com/calendar/auth
-        //request additional permissions
-        var options = new gapi.auth2.SigninOptionsBuilder(
-        {'scope': 'https://www.googleapis.com/auth/calendar.events'});
-
-        user_data={}
-        googleUser = auth2.currentUser.get();
-        //console.log(googleUser);
-
-        googleUser.grant(options).then(
-          function(success){
-            //request was successful
-            console.log("done granting");
-
-            //package all the material
-            user_data["gid"] = googleUser["El"];
-            user_data["access_token"] = googleUser["Zi"]["access_token"];
-            user_data["expires_at"] = googleUser["Zi"]["expires_at"];
-            user_data["name"] = googleUser["w3"]["ig"];
-            user_data["email"] = googleUser["w3"]["U3"];
-
-            console.log(user_data);
-            postToBackend("/authenticate",user_data);
-
-          },
-          function(fail){
-            //request was not successful
-            alert(JSON.stringify({message: "fail", value: fail}));
-            
-            //TODO reload the page or tell the backend that this user failed
-          });
-      }
-    </script>
-
   </body>
 </html>
 

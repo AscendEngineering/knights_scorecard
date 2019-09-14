@@ -74,6 +74,10 @@ var app = new Vue({
         this.metrics.forEach(element => {
           this.request_metrics("all",30,element);
         });
+      },
+
+      logout: function(event){
+        window.location.href="/logout"
       }
 
   },

@@ -19,13 +19,20 @@
     <script src="//unpkg.com/vue@latest/dist/vue.min.js"></script>
     <script src="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>  
 
+    <!-- To Keep Track of Cookies -->
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+
 
     
 
   </head>
   <body>
     <div id="app" >
-        <b-jumbotron header="Knights Scorecard"></b-jumbotron>
+        <b-jumbotron header="Knights Scorecard">
+          <div class="d-flex flex-row-reverse bd-highlight">
+            <div class="btn btn-primary p-2 bd-highlight" type="button" @click="logout" >Logout</div>
+          </div>
+        </b-jumbotron>
         <b-row>
           <b-col class="m-3">
             <h1>Knights</h1>
@@ -46,7 +53,7 @@
           <b-col class="m-3">
             <b-row>
               <h1>Total Metrics</h1>
-              <b-button @click="request_all_metrics" :disabled="disableMetricsRequest" class="ml-3">Get Metrics</b-button>
+              <div @click="request_all_metrics" :disabled="disableMetricsRequest" type="button" class="ml-3 btn btn-primary">Get Metrics</div>
               <b-spinner variant="primary" label="Spinning" class="ml-3" :hidden="hideLoading"></b-spinner>
             </b-row>
             <b-table 
@@ -62,9 +69,6 @@
         </b-row>
 
     </div>
-    
-
-
 
 
 
