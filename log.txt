@@ -277,33 +277,38 @@ can not log us out
 thing manually after we deactivate like we did before
 -yeah we might need to send back an authorized prompt before we try to access the site
 
+-so what metrics do we need. we need to figure that one out,
+
+-they have cut an agreement with the vendor 
+-so what is next. lets make it faster by making a single get to calendar events
+-so i bet I can find out exactly what they are returning by looking through their backend code
+
 TODO
 _______________________________________________________
 
 
 -figure out why we have a horizontal scroll at the bottom....no matter what we seem to do
--restructure our models so that we have a google calendar class that we call, instead of all of these methods
 -pull in the timezone from the user and adjust the clock for that
 -move timezone factor into a constants file (like extratime in models.py)
--keep a session alive for the user
--make a signoout button
 -expand to_gcal_url in tools.py to include timezone as well
--figure out how to get metrics for all knights
--split index.html and knights.html into 2
+-split index.html and knights.html into 2 apps
 -add in some type of logging
--make sure the Knights list is sorted alphabetically
 -improve logging
--make a spinning logo icon when we fetch the metrics
--make all webpages logon required
-	from django.contrib.auth.decorators import login_required
--make sure you can only send requests (on the frontend) if you are a logged in user
--make sure we make a logout button
--integrate social_django with google calendar stuff: https://python-social-auth.readthedocs.io/en/latest/backends/google.html
 -make redirect with unauthorized access so the user knows why they are being logged out
 -figure out the error that occurs when we try to login with stainless809 and then wilkinsaf
--why do we have to log on twice to get this shit to work
 -check if we our authorization token still works after an hour
 -ask hector for some money so that we can upgrade our hardware
+-change the timing so it shows just one month time frame, instead of 30 days behind
+and into the future
+-add a goto calendar feature that allows you to go straight to the calendar
+-add the date headers instead of (Past meetings/future meetings) -> previous appointment , future appointment
+-add "available" for appointment
+-add mutli-user support, so that knights can view their own scorecard
+-look at smartcalls to get ideas for styling
+-make sure I have access to Patrick arnt account
+-change the code so there is only one events fetch
+
+
 
 DONE
 _______________________________________________________
@@ -340,11 +345,19 @@ to authenticate with google.
 -change it so that we are sending a uid instead of a name when requesting users
 	-we fixed this so we are looking at first names and last names
 	-good enough for now
-
-
-
-
-
+-restructure our models so that we have a google calendar class that we call, instead of all of these methods
+	-Yeah this has been taken care of in models, since this is our backend
+-keep a session alive for the user
+-make a signoout button
+-figure out how to get metrics for all knights
+-make sure the Knights list is sorted alphabetically
+-make a spinning logo icon when we fetch the metrics
+-make all webpages logon required
+	from django.contrib.auth.decorators import login_required
+-make sure you can only send requests (on the frontend) if you are a logged in user
+-make sure we make a logout button
+-integrate social_django with google calendar stuff: https://python-social-auth.readthedocs.io/en/latest/backends/google.html
+-why do we have to log on twice to get this shit to work
 
 QUESTIONS
 _______________________________________________________

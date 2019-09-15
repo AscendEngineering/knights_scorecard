@@ -74,7 +74,6 @@ def getMetrics(request):
     #grab the current token
     google_login = request.user.social_auth.get(provider="google-oauth2")
     current_token = google_login.extra_data["access_token"]
-    print(current_token)
 
     #select the matching knight
     knight_emails = []
@@ -105,32 +104,24 @@ def getMetrics(request):
     retVal = {
         "Meeting": metric, 
         "Past Meetings": str(totalPastEvents),
-        "Future Meetings": str(totalPastEvents)
+        "Future Meetings": str(totalFutureEvents)
     }
 
     #return that json
     return(JsonResponse(retVal))
      
-def authenticateUser(request):
 
-    #grab the current user
-    current_user = request.user.social_auth.get(provider='google-oauth2')
-    current_uid = current_user.uid
+#move this method somewhere else
+def authenticateUser(backend, details, response, uid, user, *args, **kwargs):
 
     #check that we have a valid password
-    if(not request.user.has_usable_password()):
-        request.user.set_password("placeholder")
-        request.user.save()
-
-    print("cehcking to see fi exists")
+    if(not user.has_usable_password()):
+        user.set_password("placeholder")
+        user.save()
 
     #check if they are authorized (paying us money)
-    if(user(current_uid).exists()):
-        user(current_uid).loggedOn()
-        return(HttpResponse(status=200))
-    else:
-        #if not logout and reject
-        return(redirect("/logout"))
+    if(site_user(uid).exists()):
+        site_user(uid).loggedOn()
 
     
     

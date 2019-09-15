@@ -3,7 +3,7 @@ from django.core.exceptions import *
 import time
 
 
-class user():
+class site_user():
 
     def __init__(self,email):
         self.email = email
