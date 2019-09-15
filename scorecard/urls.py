@@ -10,7 +10,6 @@ urlpatterns = [
     path('main/', mainPage, name="main"),
     path('main/knight/', knightsPage, name="knightsPage"),
     path('metrics/', getMetrics, name='getMetrics'),
-    path('authenticate',authenticateUser,name='authenticateUser'),
     path('knightList',getKnights,name='getKnights'),
     url('auth/', include('social_django.urls', namespace='social')),
     url(r'^login/$', splashPage, name='login'),

@@ -1,4 +1,5 @@
 import datetime
+from .userManager import site_user
 from pytz import timezone
 
 
@@ -23,3 +24,15 @@ def getFutureDates(days_future):
     edate = datetime.datetime(today.year, today.month, today.day) + datetime.timedelta(days_future)
 
     return str(sdate),str(edate)
+
+#move this method somewhere else
+def authenticateUser(backend, details, response, uid, user, *args, **kwargs):
+
+    #check that we have a valid password
+    if(not user.has_usable_password()):
+        user.set_password("placeholder")
+        user.save()
+
+    #check if they are authorized (paying us money)
+    if(site_user(uid).exists()):
+        site_user(uid).loggedOn()
