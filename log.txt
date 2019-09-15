@@ -282,6 +282,17 @@ thing manually after we deactivate like we did before
 -they have cut an agreement with the vendor 
 -so what is next. lets make it faster by making a single get to calendar events
 -so i bet I can find out exactly what they are returning by looking through their backend code
+-so how are we going to verify that this person can actually log in????
+-because right now we dont, it just lets them log in
+
+
+
+
+
+Worklog
+_______________________________________________________
+20190905 14:05 - 
+
 
 TODO
 _______________________________________________________
@@ -307,6 +318,7 @@ and into the future
 -look at smartcalls to get ideas for styling
 -make sure I have access to Patrick arnt account
 -change the code so there is only one events fetch
+	-we are going to wait until we have access to an account with more events to count
 
 
 
