@@ -2,7 +2,7 @@ var app = new Vue({
   el: '#app',
   data: {
       message: 'Hello Vue!',
-      fields: ["Meeting", "Past Meetings", "Future Meetings"],
+      fields: ["Meeting", "Previous Appointments (1st)", "Future Appointments (EOM)"],
       metrics: ["Associate","Insured","Postponed","Cancelled", "Available"],
       items: [],
       knights: [],

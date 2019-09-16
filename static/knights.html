@@ -27,24 +27,26 @@
   </head>
   <body>
     <div id="app" >
-    <b-row>
-        <h1 class="m-5"> <a style="text-decoration:none;color: black" href='/main'>Home</a> | {{ name }}</h1>
-    </b-row>
-    <b-row>
-        <b-col>
-            <iframe class="m-5" src={{ email }} style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
-        </b-col>    
-        <b-col>
-            <b-table 
-            striped 
-            bordered
-            fixed
-            :fields="fields" :items="items"
-            :sort-by.sync="sortBy"
-            class="tight_content"
-            ></b-table>
-        </b-col> 
-    </b-row>
+    <b-container fluid>
+        <b-row>
+            <h1 class="m-5"> <a style="text-decoration:none;color: black" href='/main'>Home</a> | {{ name }}</h1>
+        </b-row>
+        <b-row class="justify-content-center">
+            <b-col class="mt-3" sm="12" md="12" lg="6">
+                <b-embed type="iframe" src={{ email }}  scrolling="no"></b-embed>
+            </b-col>    
+            <b-col class="mt-3" sm="12" md="12" lg="6">
+                <b-table 
+                striped 
+                bordered
+                fixed
+                :fields="fields" :items="items"
+                :sort-by.sync="sortBy"
+                class="tight_content"
+                ></b-table>
+            </b-col> 
+        </b-row>
+    </b-container>
         
     </div>
     

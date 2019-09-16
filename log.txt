@@ -284,8 +284,8 @@ thing manually after we deactivate like we did before
 -so i bet I can find out exactly what they are returning by looking through their backend code
 -so how are we going to verify that this person can actually log in????
 -because right now we dont, it just lets them log in
-
-
+-so for some rason in production there is no auth_user field....I dont know why
+-oh, because we havent implemented the tool there yet....lol yeah ok
 
 
 
@@ -298,23 +298,21 @@ TODO
 _______________________________________________________
 
 
--figure out why we have a horizontal scroll at the bottom....no matter what we seem to do
+-make the agents list as tall as the screen
 -pull in the timezone from the user and adjust the clock for that
 -move timezone factor into a constants file (like extratime in models.py)
 -expand to_gcal_url in tools.py to include timezone as well
--split index.html and knights.html into 2 apps
+
 -add in some type of logging
--improve logging
 -make redirect with unauthorized access so the user knows why they are being logged out
 -figure out the error that occurs when we try to login with stainless809 and then wilkinsaf
 -check if we our authorization token still works after an hour
--ask hector for some money so that we can upgrade our hardware
+
 -change the timing so it shows just one month time frame, instead of 30 days behind
 and into the future
 -add a goto calendar feature that allows you to go straight to the calendar
--add the date headers instead of (Past meetings/future meetings) -> previous appointment , future appointment
--add "available" for appointment
 -add mutli-user support, so that knights can view their own scorecard
+	-this will require us to mess around with the user's which we will actualyl hae to do
 -look at smartcalls to get ideas for styling
 -make sure I have access to Patrick arnt account
 -change the code so there is only one events fetch
@@ -370,6 +368,12 @@ to authenticate with google.
 -make sure we make a logout button
 -integrate social_django with google calendar stuff: https://python-social-auth.readthedocs.io/en/latest/backends/google.html
 -why do we have to log on twice to get this shit to work
+-add "available" for appointment
+-split index.html and knights.html into 2 apps
+	-eh, this is unneeded
+-add the date headers instead of (Past meetings/future meetings) -> previous appointment , future appointment
+-ask hector for some money so that we can upgrade our hardware
+-figure out why we have a horizontal scroll at the bottom....no matter what we seem to do
 
 QUESTIONS
 _______________________________________________________

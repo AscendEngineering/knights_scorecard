@@ -103,8 +103,8 @@ def getMetrics(request):
     #form response json
     retVal = {
         "Meeting": metric, 
-        "Past Meetings": str(totalPastEvents),
-        "Future Meetings": str(totalFutureEvents)
+        "Previous Appointments (1st)": str(totalPastEvents),
+        "Future Appointments (EOM)": str(totalFutureEvents)
     }
 
     #return that json
