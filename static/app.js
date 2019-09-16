@@ -3,7 +3,7 @@ var app = new Vue({
   data: {
       message: 'Hello Vue!',
       fields: ["Meeting", "Past Meetings", "Future Meetings"],
-      metrics: ["Associate","Insured","Postponed","Cancelled"],
+      metrics: ["Associate","Insured","Postponed","Cancelled", "Available"],
       items: [],
       knights: [],
       filter: "",
