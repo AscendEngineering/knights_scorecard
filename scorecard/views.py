@@ -21,6 +21,9 @@ def test(request):
     return HttpResponse("test")
 
 def splashPage(request):
+    google_login = request.user
+    if(google_login.get_username() != ""):
+        return (redirect("/main"))
     return render(request,'splash.html')
 
 @login_required

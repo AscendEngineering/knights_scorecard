@@ -29,16 +29,9 @@ def getFutureDates(days_future):
 #move this method somewhere else
 def authenticateUser(backend, details, response, uid, user, *args, **kwargs):
 
-    #check that we have a valid password
-    if(not user.has_usable_password()):
-        user.set_password("placeholder")
-        user.save()
-
     #check if they are authorized (paying us money)
     if(site_user(uid).exists()):
         site_user(uid).loggedOn()
     else:
         return HttpResponse(status=403)
-
-
 
