@@ -8,18 +8,34 @@ from .models import *
 from .userManager import *
 from .sessionManager import *
 from .tools import get_gcal_url,getPastDates,getFutureDates
+from social_django.utils import load_strategy
+from django.shortcuts import redirect
+from django.contrib.auth.models import User
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse
+import time
 
 
 def test(request):
     return HttpResponse("test")
 
 def splashPage(request):
+    google_login = request.user
+    if(google_login.get_username() != ""):
+        return (redirect("/main"))
     return render(request,'splash.html')
 
+@login_required
 def mainPage(request):
     return render(request, 'index.html')
 
-@csrf_exempt
+@login_required
+def logout(request):
+    request.user.delete()
+    return render(request, 'logout.html')
+
+@login_required
 def knightsPage(request):
 
     if request.method == 'GET':
@@ -36,7 +52,7 @@ def knightsPage(request):
         return HttpResponse(status=400)
 
 
-@csrf_exempt
+@login_required
 def getKnights(request):
     retVal=[]
 
@@ -51,29 +67,16 @@ def getKnights(request):
 
     return(JsonResponse({"knights":retVal}))
 
-@csrf_exempt
+@login_required
 def getMetrics(request):
 
     days = request.GET.get('days_ago','0')
     name = request.GET.get('name','')
     metric = request.GET.get('metric','')
-    current_gid = session(request).get("gid")
-
-    #make sure gid exists
-    if(current_gid == None):
-        print("no gid")
-        return HttpResponse(status=401)
-
-    #select the matching user
-    current_user = user(current_gid)
-    current_token = ""
-        
-    if(current_user.token_expired()):
-        print("token expired")
-        return HttpResponse(status=401)
-    else:
-        current_token=current_user.get("access_token")
-
+  
+    #grab the current token
+    google_login = request.user.social_auth.get(provider="google-oauth2")
+    current_token = google_login.extra_data["access_token"]
 
     #select the matching knight
     knight_emails = []
@@ -103,49 +106,14 @@ def getMetrics(request):
     #form response json
     retVal = {
         "Meeting": metric, 
-        "Past Meetings": str(totalPastEvents),
-        "Future Meetings": str(totalPastEvents)
+        "Previous Appointments (1st)": str(totalPastEvents),
+        "Future Appointments (EOM)": str(totalFutureEvents)
     }
 
     #return that json
     return(JsonResponse(retVal))
+     
 
-@csrf_exempt       
-def authenticateUser(request):
-
-    if request.method=='POST':
-        
-
-        #get all the info of the user (ID,Full Name, email, ID Token)
-        user_data = request.POST.dict()
-
-        #TODO authorize with google that this is a valid token
-        
-        #authenticate user
-        current_user = user(user_data["gid"])
-
-        if(current_user.exists() and (not current_user.token_expired())):
-            session(request).set("gid",current_user.get("gid"))
-            return HttpResponse("authorized")
-        else:
-            #store the client's credentials
-            succ = current_user.make(user_data)
-
-            if(succ):
-                session(request).set("gid",current_user.get("gid"))
-                return HttpResponse("authorized")
-            else:
-                return HttpResponse(status=401)
 
     
-    else:
-        return HttpResponse("Should be a POST method for authorization",status=500)
-
-
-@csrf_exempt
-def authorizeUser(request):
-    #serve up the webpage that will will tell the user to authenticate our services
-    print("TODO")
-
-    return HttpResponse("Need to authorize")
-
+    

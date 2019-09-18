@@ -1,5 +1,7 @@
 import datetime
+from .userManager import site_user
 from pytz import timezone
+from django.http import HttpResponse
 
 
 def get_gcal_url(email):
@@ -23,3 +25,13 @@ def getFutureDates(days_future):
     edate = datetime.datetime(today.year, today.month, today.day) + datetime.timedelta(days_future)
 
     return str(sdate),str(edate)
+
+#move this method somewhere else
+def authenticateUser(backend, details, response, uid, user, *args, **kwargs):
+
+    #check if they are authorized (paying us money)
+    if(site_user(uid).exists()):
+        site_user(uid).loggedOn()
+    else:
+        return HttpResponse(status=403)
+

@@ -1,0 +1,30 @@
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+</head>
+
+
+<body>
+    
+    <!-- <a href="{% url 'social:disconnect' 'google-oauth2' %}">Logout with Google</a><br> -->
+</body>
+
+<script>
+
+    axios.defaults.headers.post['X-CSRFToken'] = Cookies.get('csrftoken');
+
+    axios.post("{% url 'social:disconnect' 'google-oauth2' %}"
+    ).then(function(response){
+        console.log(response);
+        window.location.href="/"
+    })
+    .catch(function(error){
+        alert(error);
+    });
+
+</script>
+
+</html>

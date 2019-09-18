@@ -42,7 +42,6 @@ def main(dbName,csvFile):
 
         #insert them in the database
         insert_statement = insert_template % (agent_data.name,agent_data.email)
-        print(insert_statement)
         db.execute(insert_statement)
 
     conn.commit()
