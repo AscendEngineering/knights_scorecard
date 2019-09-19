@@ -7,7 +7,7 @@ import json
 from .models import *
 from .userManager import *
 from .sessionManager import *
-from .tools import get_gcal_url,getPastDates,getFutureDates
+from .tools import get_gcal_url,getBEDates
 from social_django.utils import load_strategy
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
@@ -70,7 +70,7 @@ def getKnights(request):
 @login_required
 def getMetrics(request):
 
-    days = request.GET.get('days_ago','0')
+    periodical = request.GET.get('periodical','0')
     name = request.GET.get('name','')
     metric = request.GET.get('metric','')
   
@@ -91,13 +91,12 @@ def getMetrics(request):
 
     for email in knight_emails:
 
-        #get past events
-        sdate,edate = getPastDates(int(days))
-        pastEvents = getCalendarData(email,current_token,metric, sdate,edate)
+        #get dates
+        sdate,current_date,edate = getBEDates(periodical)
 
-        #get future events
-        sdate,edate = getFutureDates(int(days))
-        futureEvents = getCalendarData(email,current_token,metric, sdate,edate)
+        #get events
+        pastEvents = getCalendarData(email,current_token,metric, sdate,current_date)
+        futureEvents = getCalendarData(email,current_token,metric, current_date,edate)
 
         #run the data through metrics processor
         totalPastEvents+=len(pastEvents)

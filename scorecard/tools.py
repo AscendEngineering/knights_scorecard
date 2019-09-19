@@ -2,29 +2,12 @@ import datetime
 from .userManager import site_user
 from pytz import timezone
 from django.http import HttpResponse
+import calendar
 
 
 def get_gcal_url(email):
     return "https://calendar.google.com/calendar/embed?src=" + email + "&ctz=America%2FChicago"
 
-
-def getPastDates(days_ago):
-
-    #get start and end dates
-    today = datetime.datetime.now().replace(tzinfo=timezone('US/Central'))
-    edate = datetime.datetime(today.year, today.month, today.day)
-    sdate = datetime.datetime(today.year, today.month, today.day) - datetime.timedelta(days_ago)
-
-    return str(sdate),str(edate)
-
-def getFutureDates(days_future):
-
-    #get start and end dates
-    today = datetime.datetime.now().replace(tzinfo=timezone('US/Central'))
-    sdate = datetime.datetime(today.year, today.month, today.day)
-    edate = datetime.datetime(today.year, today.month, today.day) + datetime.timedelta(days_future)
-
-    return str(sdate),str(edate)
 
 #move this method somewhere else
 def authenticateUser(backend, details, response, uid, user, *args, **kwargs):
@@ -34,4 +17,37 @@ def authenticateUser(backend, details, response, uid, user, *args, **kwargs):
         site_user(uid).loggedOn()
     else:
         return HttpResponse(status=403)
+
+
+
+def getBEDates(periodical):
+    periodical = periodical.upper()
+
+    if(periodical not in ['A','M','D']):
+        return None
+
+    #vars
+    current_date = datetime.datetime.now().replace(tzinfo=timezone('US/Central'))
+    sdate = datetime.datetime(year=current_date.year,month=1,day=1,tzinfo=timezone('US/Central'))
+    edate = datetime.datetime(year=current_date.year,month=1,day=1,tzinfo=timezone('US/Central'))
+
+    #set dates
+    if (periodical=='A'):
+        edate = edate.replace(year=current_date.year+1)
+
+    elif (periodical=='M'):
+        sdate = sdate.replace(month=current_date.month)
+        last_day_of_month = calendar.monthrange(current_date.year, current_date.month)[-1]
+        edate = edate.replace(month=current_date.month, day = last_day_of_month)
+
+    else:
+        sdate = sdate.replace(month=current_date.month, day=current_date.day)
+        edate = edate.replace(month=current_date.month, day=current_date.day+1)
+
+    
+    sdate_output = sdate.strftime("%Y-%m-%dT%H:%M:%S" )+ '-05:00'
+    edate_output = edate.strftime("%Y-%m-%dT%H:%M:%S" )+ '-05:00'
+    current_output = current_date.strftime("%Y-%m-%dT%H:%M:%S" )+ '-05:00'
+
+    return sdate_output,current_output,edate_output
 

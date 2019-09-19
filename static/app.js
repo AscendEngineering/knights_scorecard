@@ -25,10 +25,10 @@ var app = new Vue({
       },
  
 
-      request_metrics: function(name,days_ago,metric){
+      request_metrics: function(name,periodical,metric){
 
         //create the json with the days ago, metrics, and username
-        data = {"days_ago": days_ago, "metric": metric, "name": name};
+        data = {"periodical": periodical, "metric": metric, "name": name};
 
         //send to the current url
         axios.get('/metrics',{
@@ -72,7 +72,7 @@ var app = new Vue({
         this.hideLoading = false;
         this.disableMetricsRequest = true;
         this.metrics.forEach(element => {
-          this.request_metrics("all",30,element);
+          this.request_metrics("all",'M',element);
         });
       },
 
@@ -90,7 +90,7 @@ var app = new Vue({
 
       //request the metric
       this.metrics.forEach(element => {
-        this.request_metrics(name,30,element);
+        this.request_metrics(name,'M',element);
       });
       
     }
