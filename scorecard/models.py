@@ -39,19 +39,6 @@ def getCalendarData(email,token, search,sdate,edate):
     if(token==""):
         return
 
-
-    #form the start date
-    sdatetime = sdate.split(' ')
-    sdate = sdatetime[0]
-    stime = sdatetime[1]
-    start_time = expandTime(sdate,stime)
-
-    #form the end date
-    edatetime = edate.split(' ')
-    edate = edatetime[0]
-    etime = edatetime[1]
-    end_time = expandTime(edate,etime)
-
     #create service
     creds = google.oauth2.credentials.Credentials(token)
     service = build('calendar', 'v3', credentials=creds)
@@ -62,7 +49,7 @@ def getCalendarData(email,token, search,sdate,edate):
     while True:
 
         try:
-            events = service.events().list(calendarId=email, q=search, timeMin=start_time, timeMax=end_time, pageToken=page_token, singleEvents=True).execute()
+            events = service.events().list(calendarId=email, q=search, timeMin=sdate, timeMax=edate, pageToken=page_token, singleEvents=True).execute()
             events_data.extend(events['items'])
             page_token = events.get('nextPageToken')
         except HttpError as err:

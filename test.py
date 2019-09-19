@@ -5,6 +5,8 @@ import os.path
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
+from pytz import timezone
+import calendar
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/calendar.events']
@@ -79,9 +81,29 @@ def main():
     #     start = event['start'].get('dateTime', event['start'].get('date'))
     #     print(start, event['summary'])
 
-if __name__ == '__main__':
-    main()
+def getBEDates(periodical):
 
+    if(periodical not in ['A','M','D']):
+        return None
+
+    current_date = datetime.datetime.now().replace(tzinfo=timezone('US/Central'))
+    sdate = datetime.datetime(year=current_date.year,month=1,day=1,tzinfo=timezone('US/Central'))
+    edate = datetime.datetime(year=current_date.year,month=1,day=1,tzinfo=timezone('US/Central'))
+
+    if (periodical=='A'):
+        edate = edate.replace(year=current_date.year+1)
+    elif (periodical=='M'):
+        sdate = sdate.replace(month=current_date.month)
+        last_day_of_month = calendar.monthrange(current_date.year, current_date.month)[-1]
+        edate = edate.replace(month=current_date.month, day = last_day_of_month)
+    else:
+        sdate = sdate.replace(month=current_date.month, day=current_date.day)
+        edate = edate.replace(month=current_date.month, day=current_date.day+1)
+
+    return sdate,edate
+
+
+if __name__ == '__main__':
 
 
 
