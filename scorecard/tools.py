@@ -45,9 +45,9 @@ def getBEDates(periodical):
         edate = edate.replace(month=current_date.month, day=current_date.day+1)
 
     
-    sdate_output = sdate.strftime("%Y-%m-%dT%H:%M:%S" )+ '-05:00'
-    edate_output = edate.strftime("%Y-%m-%dT%H:%M:%S" )+ '-05:00'
-    current_output = current_date.strftime("%Y-%m-%dT%H:%M:%S" )+ '-05:00'
+    sdate_output = sdate.strftime("%Y-%m-%dT%H:%M:%S" )+ '-00:00'
+    edate_output = edate.strftime("%Y-%m-%dT%H:%M:%S" )+ '-00:00'
+    current_output = current_date.strftime("%Y-%m-%dT%H:%M:%S" )+ '-00:00'
 
     return sdate_output,current_output,edate_output
 

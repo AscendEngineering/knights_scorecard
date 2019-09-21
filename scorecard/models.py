@@ -8,15 +8,6 @@ import datetime
 import os.path
 import pickle
 
-
-def expandTime(date,time):
-    extratime = '-05:00'
-
-    if(time.count(':')<2):
-        extratime = ':00' + extratime
-
-    return (date+'T'+ time + extratime)
-
 def fillWriteTemplate(title,description,start_time,end_time):
     event = {
         'summary': title,
