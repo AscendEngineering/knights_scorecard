@@ -5,29 +5,24 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <link href='https://fonts.googleapis.com/css?family=Julius Sans One' rel='stylesheet'>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   </head>
   <body>
-    <div id="center">
-      <div id="main">
-        <!-- <h1>Sign In</h1>
-        <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div> -->
-        <a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a><br>
+    {% load static %}
+    <div class="container-fluid h-100 d-flex align-items-center">
+        
+      <div class="row d-flex justify-content-center ">
+        <div class="col-5">
+          <div class="row justify-content-center">
+            <img src="{% static 'knightsImage.png' %}" class="img-fluid  ">
+          </div>
+          <div class="row justify-content-center">
+              <a href="{% url 'social:begin' 'google-oauth2' %}" class="col-8 badge badge-primary">Login with Google</a><br>
+          </div>
+        </div>
       </div>
     </div>
-    <style>
-      #main{
-        position: relative;
-      }
-      #center{
-        position: relative;
-        top: 50%; 
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-family: 'Julius Sans One';
-      }
 
-    </style>
   </body>
 </html>
 
