@@ -7,7 +7,7 @@ var app = new Vue({
       items: [],
       knights: [],
       filter: "",
-      sortBy: "Days",
+      sortBy: "Meeting",
       currentKnight:"",
       hideLoading: true,
       disableMetricsRequest: false
@@ -35,7 +35,8 @@ var app = new Vue({
           params:data
         })
           .then((response) => {
-            this.items.push(response.data);
+            this.items.push(response.data)
+            this.items.sort((a,b) => (a.Meeting > b.Meeting) ? 1 : -1 );
 
             //hide loading icon
             if(this.items.length == this.metrics.length){

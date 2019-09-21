@@ -11,7 +11,7 @@ from .tools import get_gcal_url,getBEDates
 from social_django.utils import load_strategy
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
-from django.contrib.auth import logout
+from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 import time
@@ -32,8 +32,8 @@ def mainPage(request):
 
 @login_required
 def logout(request):
-    request.user.delete()
-    return render(request, 'logout.html')
+    auth_logout(request)
+    return redirect("/")
 
 @login_required
 def knightsPage(request):
@@ -76,7 +76,7 @@ def getMetrics(request):
   
     #grab the current token
     google_login = request.user.social_auth.get(provider="google-oauth2")
-    current_token = google_login.extra_data["access_token"]
+    current_token = google_login.get_access_token(load_strategy())
 
     #select the matching knight
     knight_emails = []

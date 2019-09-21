@@ -73,7 +73,8 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
 ]
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {
-  'access_type': 'offline'
+  'access_type': 'offline',
+  'prompt': 'consent'
 }
 
 SOCIAL_AUTH_USERNAME_IS_FULL_EMAIL = True
