@@ -27,8 +27,9 @@
   </head>
   <body style="background: rgb(250,250,235)">
     <div id="app" >
-    <b-container fluid>
-        <b-row style="background:rgb(0,46,93);">
+        <b-container fluid>
+            <!-- BANNER -->
+            <b-row style="background:rgb(0,46,93);">
                 <b-col xs="10" sm="10" md="10" lg="10" xl="10">
                     <b-row class="align-items-center m-3">
                         <a style="text-decoration:none;color: white" href='/main'>
@@ -41,23 +42,26 @@
                     <b-button class="m-3" type="button" @click="logout" >Logout</b-button >
                 </b-col>
             </b-row>
-        <b-row class="justify-content-center">
-            <b-col class="mt-3" xs="12" sm="12" md="12" lg="6" xl="6">
-                <b-embed type="iframe" src={{ email }}  scrolling="no"></b-embed>
-            </b-col>    
-            <b-col class="mt-3" xs="12" sm="12" md="12" lg="6" xl="6">
-                <b-table 
-                striped 
-                bordered
-                fixed
-                :fields="fields" :items="items"
-                :sort-by.sync="sortBy"
-                class="tight_content"
-                style="background: white"
-                ></b-table>
-            </b-col> 
-        </b-row>
-    </b-container>
+            <!-- BANNER -->
+
+        
+            <b-row class="justify-content-center">
+                <b-col class="mt-3" xs="12" sm="12" md="12" lg="6" xl="6">
+                    <b-embed type="iframe" src={{ email }}  scrolling="no"></b-embed>
+                </b-col>    
+                <b-col class="mt-3" xs="12" sm="12" md="12" lg="6" xl="6">
+                    <b-table 
+                    striped 
+                    bordered
+                    fixed
+                    :fields="fields" :items="items"
+                    :sort-by.sync="sortBy"
+                    class="tight_content"
+                    style="background: white"
+                    ></b-table>
+                </b-col> 
+            </b-row>
+        </b-container>
         
     </div>
     
