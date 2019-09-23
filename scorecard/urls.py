@@ -13,5 +13,6 @@ urlpatterns = [
     path('knightList',getKnights,name='getKnights'),
     url('auth/', include('social_django.urls', namespace='social')),
     url(r'^login/$', splashPage, name='login'),
-    url(r'^logout/$', logout, name='logout'),   
+    url(r'^logout/$', logout, name='logout'),  
+    url('access_denied/',access_denied,name='access_denied') 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -26,6 +26,9 @@ def splashPage(request):
         return (redirect("/main"))
     return render(request,'splash.html')
 
+def access_denied(request):
+    return HttpResponse(status=403)
+
 @login_required
 def mainPage(request):
     return render(request, 'index.html')

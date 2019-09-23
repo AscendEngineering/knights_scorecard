@@ -3,7 +3,7 @@ from .userManager import site_user
 from pytz import timezone
 from django.http import HttpResponse
 import calendar
-
+from django.shortcuts import redirect
 
 def get_gcal_url(email):
     return "https://calendar.google.com/calendar/embed?src=" + email + "&ctz=America%2FChicago"
@@ -16,7 +16,7 @@ def authenticateUser(backend, details, response, uid, user, *args, **kwargs):
     if(site_user(uid).exists()):
         site_user(uid).loggedOn()
     else:
-        return HttpResponse(status=403)
+        return redirect("/access_denied")
 
 
 
