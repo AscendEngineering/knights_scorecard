@@ -1,6 +1,6 @@
 
 
-
+import scorecard.klogging as LOG
 
 class session():
     def __init__(self,request):
@@ -13,7 +13,7 @@ class session():
             return value
 
         except KeyError as err:
-            print("Error finding user session value",key)
+            LOG.error("Error finding user session value",key)
             return None
 
 
@@ -31,7 +31,7 @@ class session():
         try:
             self.request.session.__delitem__(key)
         except KeyError as err:
-            print("Key does not exist in session")
+            LOG.error("Key does not exist in session")
             return False
         
         return True

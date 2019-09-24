@@ -3,18 +3,21 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.db import models
-import json
-from .models import *
-from .userManager import *
-from .sessionManager import *
-from .tools import get_gcal_url,getBEDates
 from social_django.utils import load_strategy
 from django.shortcuts import redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+
+from .models import *
+from .userManager import *
+from .sessionManager import *
+from .tools import get_gcal_url,getBEDates
+import scorecard.klogging as LOG
+
 import time
+import json
 
 
 def test(request):
@@ -24,6 +27,7 @@ def splashPage(request):
     google_login = request.user
     if(google_login.get_username() != ""):
         return (redirect("/main"))
+
     return render(request,'splash.html')
 
 def access_denied(request):
@@ -46,7 +50,6 @@ def knightsPage(request):
 
         #get the email
         email = knight(name).get("email")
-        print(get_gcal_url(email))
 
         context = {"name": name, "email": get_gcal_url(email)}
         return render(request, 'knights.html',context)
@@ -65,8 +68,7 @@ def getKnights(request):
         for knight in allknights:
             retVal.append(knight.name)
     except AttributeError as err:
-        print("Error Accessing Knights emails")
-        print(err)
+        LOG.error("Error Accessing Knights emails: " + str(err))
 
     return(JsonResponse({"knights":retVal}))
 
@@ -76,6 +78,8 @@ def getMetrics(request):
     periodical = request.GET.get('periodical','0')
     name = request.GET.get('name','')
     metric = request.GET.get('metric','')
+
+    LOG.info("Fetching " + metric + " for " + name + " with " + periodical + " frequency")
   
     #grab the current token
     google_login = request.user.social_auth.get(provider="google-oauth2")
@@ -101,7 +105,10 @@ def getMetrics(request):
         pastEvents = getCalendarData(email,current_token,metric, sdate,current_date)
         futureEvents = getCalendarData(email,current_token,metric, current_date,edate)
 
-        #run the data through metrics processor
+        #cache the results
+        knight(email).update_cache(metric,periodical,len(pastEvents),len(futureEvents))
+
+        #add them to total
         totalPastEvents+=len(pastEvents)
         totalFutureEvents+=len(futureEvents)
 
