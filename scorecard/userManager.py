@@ -1,7 +1,8 @@
 from .models import *
 from django.core.exceptions import *
 import time
-
+import json
+import scorecard.klogging as LOG
 
 class site_user():
 
@@ -14,7 +15,7 @@ class site_user():
         try:
             user = userInfo.objects.get(email=self.email)
         except userInfo.DoesNotExist as err:
-            print(err)
+            LOG.error("UserManager exists error: " + str(err))
             return False
         
         if(user != None):
@@ -39,7 +40,7 @@ class site_user():
             try:
                 retVal = user_info[metric]
             except KeyError as err:
-                print("metric does not exist")
+                LOG.error("User metric does not exist: " + str(err))
                 return None
         else:
             return None
@@ -52,7 +53,7 @@ class site_user():
         try:
             user=userInfo.objects.get(email=self.email)
         except userInfo.DoesNotExist as err:
-            print(err)
+            LOG.error("User info does not exist: " + str(err))
             return
 
         #increment log on
@@ -67,16 +68,22 @@ class knight():
     def __init__(self,name):
         self.name = name
 
+
+    def getDBObject(self):
+        if("@gmail" in self.name):
+            #search on email
+            return knightInfo.objects.get(email=self.name)
+        else:
+            firstname = self.name.split(' ')[0]
+            lastname = self.name.split(' ')[1]
+            return knightInfo.objects.all().filter(name__icontains=firstname).get(name__icontains=lastname)
+
     #get_all - get all fields
     def get_all(self):
         try:
-            #split into first and last
-            firstname = self.name.split(' ')[0]
-            lastname = self.name.split(' ')[1]
-            knight=knightInfo.objects.all().filter(name__icontains=firstname).get(name__icontains=lastname).dict()
-            return knight
+            return self.getDBObject().dict()
         except knightInfo.DoesNotExist as err:  
-            print(err)
+            LOG.error("Knight does not exist: " + str(err))
             return None
 
     #get - get a specific field (returns None if it does not exist)
@@ -88,10 +95,26 @@ class knight():
             try:
                 retVal = knight_info[metric]
             except KeyError as err:
-                print("metric does not exist")
+                LOG.error("Knights metric does not exist: " + str(err))
                 return None
         else:
             return None
 
         return retVal
         
+
+    def update_cache(self, metric, period, pastEvents, futureEvents):
+        knight=self.getDBObject()
+        cached_info = self.get('metric_cache')
+
+        if knight != None and cached_info != None:
+            key = metric+"|"+period
+            value = [pastEvents,futureEvents]
+
+            #load into json
+            temp_data = json.loads(str(knight.metric_cache))
+            temp_data[key] = value
+
+            #write back
+            knight.metric_cache = json.dumps(temp_data)
+            knight.save()

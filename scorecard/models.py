@@ -7,6 +7,7 @@ import google.oauth2.credentials
 import datetime
 import os.path
 import pickle
+import scorecard.klogging as LOG
 
 def fillWriteTemplate(title,description,start_time,end_time):
     event = {
@@ -44,8 +45,7 @@ def getCalendarData(email,token, search,sdate,edate):
             events_data.extend(events['items'])
             page_token = events.get('nextPageToken')
         except HttpError as err:
-            print(err)
-            print("Error requesting metrics from calendar")
+            LOG.error("Not authorized: " + email + "|" + search)
             break
 
         if not page_token:
@@ -82,6 +82,7 @@ class userInfo(models.Model):
 class knightInfo(models.Model):
     name = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
+    metric_cache = models.TextField()
 
     def __str__(self):
         return self.name
@@ -89,6 +90,7 @@ class knightInfo(models.Model):
     def dict(self):
         return{
             "name" : self.name,
-            "email": self.email
+            "email": self.email,
+            "metric_cache": self.metric_cache
         }
     
