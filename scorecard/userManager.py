@@ -119,6 +119,6 @@ class knight():
             knight.metric_cache = json.dumps(temp_data)
             knight.save()
 
-    def get_cache(self):
+    def get_cached(self):
         knight=self.getDBObject()
         return json.loads(self.get('metric_cache'))

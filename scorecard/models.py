@@ -8,7 +8,6 @@ import datetime
 import os.path
 import pickle
 import scorecard.klogging as LOG
-from scorecard.userManager import knight
 
 def fillWriteTemplate(title,description,start_time,end_time):
     event = {
@@ -25,12 +24,6 @@ def fillWriteTemplate(title,description,start_time,end_time):
     }
 
     return event
-
-def getCachedData(email,metric,periodical):
-    cached_data = knight(email).get_cached()
-    key = metric + "|" + periodical
-    event_values = cached_data[key]
-    return event_values[0],event_values[1]
 
 
 def getCalendarData(email,token, search,sdate,edate):

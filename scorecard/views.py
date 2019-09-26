@@ -13,7 +13,7 @@ from django.urls import reverse
 from .models import *
 from .userManager import *
 from .sessionManager import *
-from .tools import get_gcal_url,getBEDates
+from .tools import get_gcal_url,getBEDates, getCachedData
 import scorecard.klogging as LOG
 
 import time

@@ -73,7 +73,7 @@ var app = new Vue({
         this.hideLoading = false;
         this.disableMetricsRequest = true;
         this.metrics.forEach(element => {
-          this.request_metrics("all",'M',element);
+          this.request_metrics("all",'M',element,true);
         });
       },
 
@@ -97,6 +97,9 @@ var app = new Vue({
     }
     else{
       this.request_knights();
+      this.metrics.forEach(element => {
+        this.request_metrics("all",'M',element,true);
+      });
     }
     
   }

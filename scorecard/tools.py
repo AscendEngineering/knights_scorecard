@@ -4,6 +4,7 @@ from pytz import timezone
 from django.http import HttpResponse
 import calendar
 from django.shortcuts import redirect
+from scorecard.userManager import knight
 
 def get_gcal_url(email):
     return "https://calendar.google.com/calendar/embed?src=" + email + "&ctz=America%2FChicago"
@@ -51,3 +52,8 @@ def getBEDates(periodical):
 
     return sdate_output,current_output,edate_output
 
+def getCachedData(email,metric,periodical):
+    cached_data = knight(email).get_cached()
+    key = metric + "|" + periodical
+    event_values = cached_data[key]
+    return event_values[0],event_values[1]
