@@ -25,10 +25,14 @@ var app = new Vue({
       },
  
 
-      request_metrics: function(name,periodical,metric){
+      request_metrics: function(name,periodical,metric, cached=false){
 
         //create the json with the days ago, metrics, and username
         data = {"periodical": periodical, "metric": metric, "name": name};
+        
+        if(cached){
+          data["cached"] = "true"
+        }
 
         //send to the current url
         axios.get('/metrics',{
@@ -43,12 +47,10 @@ var app = new Vue({
               this.hideLoading = true;
               this.disableMetricsRequest = false;
             }
-
           })
           .catch(function(response){
             console.log("failed");
           })
-
 
       },
 
@@ -64,8 +66,6 @@ var app = new Vue({
             this.knights.push({"Knight": knightList[i]});
           }
         })
-
-
       },
 
       request_all_metrics: function(event){

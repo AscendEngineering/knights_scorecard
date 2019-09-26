@@ -1,4 +1,4 @@
-from .models import *
+from scorecard.models import *
 from django.core.exceptions import *
 import time
 import json
@@ -68,8 +68,8 @@ class knight():
     def __init__(self,name):
         self.name = name
 
-
     def getDBObject(self):
+        
         if("@gmail" in self.name):
             #search on email
             return knightInfo.objects.get(email=self.name)
@@ -118,3 +118,7 @@ class knight():
             #write back
             knight.metric_cache = json.dumps(temp_data)
             knight.save()
+
+    def get_cache(self):
+        knight=self.getDBObject()
+        return json.loads(self.get('metric_cache'))

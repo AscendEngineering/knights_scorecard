@@ -75,9 +75,10 @@ def getKnights(request):
 @login_required
 def getMetrics(request):
 
-    periodical = request.GET.get('periodical','0')
+    periodical = request.GET.get('periodical','M')
     name = request.GET.get('name','')
     metric = request.GET.get('metric','')
+    cached = request.GET.get('cached','')
 
     LOG.info("Fetching " + metric + " for " + name + " with " + periodical + " frequency")
   
@@ -102,15 +103,18 @@ def getMetrics(request):
         sdate,current_date,edate = getBEDates(periodical)
 
         #get events
-        pastEvents = getCalendarData(email,current_token,metric, sdate,current_date)
-        futureEvents = getCalendarData(email,current_token,metric, current_date,edate)
+        if(cached==''):
+            pastEvents = len(getCalendarData(email,current_token,metric, sdate,current_date))
+            futureEvents = len(getCalendarData(email,current_token,metric, current_date,edate))
+        else:
+            pastEvents,futureEvents = getCachedData(email,metric,periodical)
 
         #cache the results
-        knight(email).update_cache(metric,periodical,len(pastEvents),len(futureEvents))
+        knight(email).update_cache(metric,periodical,pastEvents,futureEvents)
 
         #add them to total
-        totalPastEvents+=len(pastEvents)
-        totalFutureEvents+=len(futureEvents)
+        totalPastEvents+=pastEvents
+        totalFutureEvents+=futureEvents
 
     #form response json
     retVal = {
