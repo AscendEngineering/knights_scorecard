@@ -9,8 +9,7 @@ var app = new Vue({
       filter: "",
       sortBy: "Meeting",
       currentKnight:"",
-      hideLoading: true,
-      disableMetricsRequest: false
+      hideLoading: false
       
   },
   methods: {
@@ -68,10 +67,8 @@ var app = new Vue({
         })
       },
 
-      request_all_metrics: function(event){
-        this.items = [];
+      request_all_metrics: function(){
         this.hideLoading = false;
-        this.disableMetricsRequest = true;
         this.metrics.forEach(element => {
           this.request_metrics("all",'M',element,true);
         });
@@ -97,9 +94,7 @@ var app = new Vue({
     }
     else{
       this.request_knights();
-      this.metrics.forEach(element => {
-        this.request_metrics("all",'M',element,true);
-      });
+      this.request_all_metrics();
     }
     
   }
