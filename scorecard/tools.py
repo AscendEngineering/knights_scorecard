@@ -53,7 +53,11 @@ def getBEDates(periodical):
     return sdate_output,current_output,edate_output
 
 def getCachedData(email,metric,periodical):
-    cached_data = knight(email).get_cached()
     key = metric + "|" + periodical
-    event_values = cached_data[key]
+    try:
+        cached_data = knight(email).get_cached()
+        event_values = cached_data[key]
+    except KeyError as err:
+        print("No cached data exists for key:", key)
+        return 0,0
     return event_values[0],event_values[1]
