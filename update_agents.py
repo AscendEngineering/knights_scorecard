@@ -37,7 +37,7 @@ def main(dbName,csvFile):
     #go through the list of agents
     conn = sqlite3.connect(dbName)
     db = conn.cursor()
-    insert_template = "INSERT INTO scorecard_knightinfo (name,email) VALUES ('%s','%s')"
+    insert_template = "INSERT INTO scorecard_knightinfo (name,email,metric_cache) VALUES ('%s','%s','{}')"
     for agent_data in agents:
 
         #insert them in the database

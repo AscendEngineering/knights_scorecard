@@ -94,7 +94,6 @@ var app = new Vue({
     }
     else{
       this.request_knights();
-      this.request_all_metrics();
     }
     
   }
