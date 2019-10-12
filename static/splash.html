@@ -9,19 +9,16 @@
   </head>
   <body>
     {% load static %}
-    <div class="container-fluid h-100 d-flex align-items-center">
-        
-      <div class="row d-flex justify-content-center ">
-        <div class="col-5">
+    <div class="container-fluid h-100 d-flex">
+        <div class="col">
           <div class="row justify-content-center">
-            <img src="{% static 'knightsImage.png' %}" class="img-fluid  ">
+            <img src="{% static 'smartcalls_splash.jpg' %}" class="img-fluid  ">
           </div>
           <div class="row justify-content-center">
-              <a href="{% url 'social:begin' 'google-oauth2' %}" class="col-8 badge badge-primary">Login with Google</a><br>
+              <a href="{% url 'social:begin' 'google-oauth2' %}" style="padding:20px" class="col-5 badge badge-primary">Login with Google</a><br>
           </div>
         </div>
       </div>
-    </div>
 
   </body>
 </html>
