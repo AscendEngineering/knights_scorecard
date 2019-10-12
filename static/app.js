@@ -94,6 +94,11 @@ var app = new Vue({
     }
     else{
       this.request_knights();
+
+      //request the metric
+      this.metrics.forEach(element => {
+        this.request_metrics("all",'M',element,true);
+      });
     }
     
   }

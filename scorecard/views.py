@@ -90,8 +90,10 @@ def getMetrics(request):
     knight_emails = []
     if(name=="all"):
         knight_emails = all_emails()
-    else:
+    elif name!="":
         knight_emails.append(knight(name).get("email"))
+    else:
+        LOG.error("getMetrics called for invalid name: '"+ name+ "'")
 
     #variables
     totalFutureEvents = 0
