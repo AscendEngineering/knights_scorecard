@@ -5,6 +5,7 @@ from django.http import HttpResponse
 import calendar
 from django.shortcuts import redirect
 from scorecard.userManager import knight
+from knightsTracker.settings import PERIODICALS
 
 def get_gcal_url(email):
     return "https://calendar.google.com/calendar/embed?src=" + email + "&ctz=America%2FChicago"
@@ -24,7 +25,7 @@ def authenticateUser(backend, details, response, uid, user, *args, **kwargs):
 def getBEDates(periodical):
     periodical = periodical.upper()
 
-    if(periodical not in ['A','M','D']):
+    if(periodical not in PERIODICALS):
         return None
 
     #vars

@@ -84,6 +84,7 @@ class knightInfo(models.Model):
     name = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
     metric_cache = models.TextField()
+    acc_manager = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
@@ -92,6 +93,7 @@ class knightInfo(models.Model):
         return{
             "name" : self.name,
             "email": self.email,
-            "metric_cache": self.metric_cache
+            "metric_cache": self.metric_cache,
+            "acc_manager": self.acc_manager
         }
     

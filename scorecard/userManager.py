@@ -69,7 +69,6 @@ class knight():
         self.name = name
 
     def getDBObject(self):
-        
         if("@gmail" in self.name):
             #search on email
             return knightInfo.objects.get(email=self.name)

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'scorecard',
     'social_django',
+    'background_task'
 ]
 
 MIDDLEWARE = [
@@ -170,3 +171,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     ]
+
+METRICS = ["Associate","Insured","Postponed","Cancelled", "Available"]
+PERIODICALS = ['A','M','D']
