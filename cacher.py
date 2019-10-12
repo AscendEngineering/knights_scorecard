@@ -11,7 +11,7 @@ import sys
 import time
 import datetime
 
-sleepTime = 30
+sleepTime = 3600
 
 while(True):
     for email in all_emails():
