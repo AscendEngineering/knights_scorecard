@@ -4,7 +4,7 @@ import argparse
 
 class agent():
     def __init__(self,agent_data):
-        self.name=agent_data[0]  + ' ' + agent_data[1]
+        self.name=agent_data[1]  + ' ' + agent_data[0]
         self.email=agent_data[2]
 
 
@@ -37,7 +37,7 @@ def main(dbName,csvFile):
     #go through the list of agents
     conn = sqlite3.connect(dbName)
     db = conn.cursor()
-    insert_template = "INSERT INTO scorecard_knightinfo (name,email,metric_cache) VALUES ('%s','%s','{}')"
+    insert_template = "INSERT INTO scorecard_knightinfo (name,email,metric_cache,acc_manager) VALUES ('%s','%s','{}','smartcalls.humanconnection@gmail.com')"
     for agent_data in agents:
 
         #insert them in the database

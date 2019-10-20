@@ -4,6 +4,7 @@ var app = new Vue({
       message: 'Hello Vue!',
       fields: ["Meeting", "Previous Appointments (1st)", "Future Appointments (EOM)"],
       metrics: ["Associate","Insured","Postponed","Cancelled", "Available"],
+      fields: [{key:'Name',sortable:true}],
       items: [],
       knights: [],
       filter: "",
@@ -17,9 +18,8 @@ var app = new Vue({
         console.log("test");
       },
       knight_selected: function(record,indx){
-        this.currentKnight = record.Knight;
-        knight_url = 'knight/?name=' + record.Knight;
-        console.log(knight_url);
+        this.currentKnight = record['Name'];
+        knight_url = 'knight/?name=' + this.currentKnight;
         window.location.href=knight_url;
       },
  
@@ -27,7 +27,7 @@ var app = new Vue({
       request_metrics: function(name,periodical,metric, cached=false){
 
         //create the json with the days ago, metrics, and username
-        data = {"periodical": periodical, "metric": metric, "name": name};
+        data = {"periodical": periodical, "metrics": this.metrics, "name": name};
         
         if(cached){
           data["cached"] = "true"
@@ -38,13 +38,16 @@ var app = new Vue({
           params:data
         })
           .then((response) => {
-            this.items.push(response.data)
-            this.items.sort((a,b) => (a.Meeting > b.Meeting) ? 1 : -1 );
+            knights_data = response.data["knights"]
+            for( i=0; i< knights_data.length; i++){
+              this.items.push(knights_data[i]);
+              this.items.sort((a,b) => (a.Meeting > b.Meeting) ? 1 : -1 );
 
-            //hide loading icon
-            if(this.items.length == this.metrics.length){
-              this.hideLoading = true;
-              this.disableMetricsRequest = false;
+              //hide loading icon
+              if(this.items.length == this.metrics.length){
+                this.hideLoading = true;
+                this.disableMetricsRequest = false;
+              }
             }
           })
           .catch(function(response){
@@ -67,40 +70,41 @@ var app = new Vue({
         })
       },
 
-      request_all_metrics: function(){
-        this.hideLoading = false;
-        this.metrics.forEach(element => {
-          this.request_metrics("all",'M',element,true);
-        });
-      },
-
       logout: function(event){
         window.location.href="/logout"
+      },
+
+      generate_fields: function(){
+        //go through all metrics
+        this.metrics.forEach(element => {
+          
+          tempDict = {
+            key: "Future " + element,
+            sortable: true
+          };
+
+          this.fields.push(tempDict);
+
+          tempDict = {
+            key: "Past " + element,
+            sortable: true
+          };
+
+          this.fields.push(tempDict);
+
+        });
+
       }
 
   },
   mounted: function() {
-    if(window.location.href.includes("name")){
-      
-      //grab username
-      var url = new URL(window.location.href);
-      var name = url.searchParams.get("name");
+      //this.request_knights();
+
+      this.generate_fields();
 
       //request the metric
-      this.metrics.forEach(element => {
-        this.request_metrics(name,'M',element);
-      });
-      
-    }
-    else{
-      this.request_knights();
+      this.request_metrics("all",'M',"whatever",true);
 
-      //request the metric
-      this.metrics.forEach(element => {
-        this.request_metrics("all",'M',element,true);
-      });
-    }
-    
   }
 });
 

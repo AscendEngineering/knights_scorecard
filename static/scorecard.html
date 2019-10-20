@@ -33,7 +33,7 @@
           <b-row style="background:rgb(0,46,93);">
               <b-col xs="10" sm="10" md="10" lg="10" xl="10">
                   <b-row class="align-items-center m-3">
-                    <a style="text-decoration:none;color: white" href='/scorecard'>
+                    <a style="text-decoration:none;color: white" href='/main'>
                       <b-img src="{% static 'smartcalls_logo.jpg' %}" style="width:254px;height:76px"></b-img>
                     </a>                  
                     <h1 class="m-2" style="color:white"> Knights Scorecard</h1>
@@ -47,47 +47,25 @@
 
         
           <b-row> 
-            <b-col class="mt-3" xs="12" sm="12" md="6" lg="6" xl="6">
+            <b-col class="mt-3" xs="12" sm="12" md="12" lg="12" xl="12">
               <h1>Agents</h1>
                 <b-form-input v-model="filter" placeholder="Agent Name"></b-form-input>
                 <b-table 
+                  sticky-header
                   striped 
                   bordered 
                   hover 
                   responsive
                   :filter="filter"
-                  :items="knights" 
+                  :fields="fields"
+                  :items="items" 
                   class="list-scrollable" 
                   thead-class="hide-header"
-                  @row-clicked='knight_selected'
                   style="background: white; max-height: 70vh;">
                 </b-table>
             </b-col>
 
-            <b-col class="mt-3" xs="12" sm="12" md="6" lg="6" xl="6">
-              <b-row>
-		<b-col>      
-              	  <h1>Total Metrics</h1>
-		  <p>(Updated hourly)<p>
-		</b-col>
-		<b-col>
-                  <b-spinner variant="primary" label="Spinning" class="ml-3" :hidden="hideLoading"></b-spinner>
-		</b-col>
-              </b-row>
-              <b-table 
-                striped 
-                bordered
-                fixed
-                :fields="fields" 
-                :items="items"
-                :sort-by.sync="sortBy"
-                class="tight_content"
-                style="background: white"
-                ></b-table>
-            </b-col>
-          </b-row>
-      </b-container>
-    </div>
+        <b-row>
 
 
 </body>
@@ -97,7 +75,3 @@
     <link href="{% static 'style.css' %}" rel="stylesheet">
     
 </html>
-
-
-
-

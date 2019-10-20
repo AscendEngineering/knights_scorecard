@@ -60,7 +60,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 LOGIN_URL='/login'
-LOGIN_REDIRECT_URL='/main'
+LOGIN_REDIRECT_URL='/scorecard'
 LOGOUT_URL = '/logout'
 LOGOUT_REDIRECT_URL='/'
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY ='124633307597-s1ii2fartnupr8qut8j3burgr0a6ufpu.apps.googleusercontent.com' 
