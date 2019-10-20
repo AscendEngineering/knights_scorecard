@@ -26,7 +26,7 @@ def test(request):
 def splashPage(request):
     google_login = request.user
     if(google_login.get_username() != ""):
-        return (redirect("/main"))
+        return (redirect("/scorecard"))
 
     return render(request,'splash.html')
 
