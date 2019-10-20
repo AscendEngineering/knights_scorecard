@@ -38,6 +38,10 @@ def mainPage(request):
     return render(request, 'index.html')
 
 @login_required
+def scorecard(request):
+    return render(request,'scorecard.html')
+
+@login_required
 def logout(request):
     auth_logout(request)
     return redirect("/")
@@ -77,10 +81,10 @@ def getMetrics(request):
 
     periodical = request.GET.get('periodical','M')
     name = request.GET.get('name','')
-    metric = request.GET.get('metric','')
+    metrics = request.GET.getlist('metrics[]','none')
     cached = request.GET.get('cached','')
 
-    LOG.info("Fetching " + metric + " for " + name + " with " + periodical + " frequency")
+    LOG.info("Fetching " + str(metrics) + " for " + name + " with " + periodical + " frequency")
   
     #grab the current token
     google_login = request.user.social_auth.get(provider="google-oauth2")
@@ -99,34 +103,38 @@ def getMetrics(request):
     totalFutureEvents = 0
     totalPastEvents = 0
 
+    ret_list = []
     for email in knight_emails:
 
-        #get dates
-        sdate,current_date,edate = getBEDates(periodical)
+        full_name = knight(email).get('name')
+        knight_entry = {"email":email, "Name": full_name}
+        for metric in metrics:
 
-        #get events
-        if(cached==''):
-            pastEvents = len(getCalendarData(email,current_token,metric, sdate,current_date))
-            futureEvents = len(getCalendarData(email,current_token,metric, current_date,edate))
-        else:
-            pastEvents,futureEvents = getCachedData(email,metric,periodical)
+            #get dates
+            sdate,current_date,edate = getBEDates(periodical)
 
-        #cache the results
-        knight(email).update_cache(metric,periodical,pastEvents,futureEvents)
+            #get events
+            if(cached==''):
+                pastEvents = len(getCalendarData(email,current_token,metric, sdate,current_date))
+                futureEvents = len(getCalendarData(email,current_token,metric, current_date,edate))
+            else:
+                pastEvents,futureEvents = getCachedData(email,metric,periodical)
 
-        #add them to total
-        totalPastEvents+=pastEvents
-        totalFutureEvents+=futureEvents
+            #cache the results
+            knight(email).update_cache(metric,periodical,pastEvents,futureEvents)
 
-    #form response json
-    retVal = {
-        "Meeting": metric, 
-        "Previous Appointments (1st)": str(totalPastEvents),
-        "Future Appointments (EOM)": str(totalFutureEvents)
-    }
+            #add them to total
+            totalPastEvents+=pastEvents
+            totalFutureEvents+=futureEvents
+
+            #add to the dictionary
+            knight_entry["Future " + metric] = futureEvents
+            knight_entry["Past " + metric] = pastEvents
+
+        ret_list.append(knight_entry)
 
     #return that json
-    return(JsonResponse(retVal))
+    return(JsonResponse({"knights":ret_list}))
      
 
 
