@@ -82,6 +82,7 @@ def getMetrics(request):
     periodical = request.GET.get('periodical','M')
     name = request.GET.get('name','')
     metrics = request.GET.getlist('metrics[]','none')
+    timezone = request.GET.get('timezone','America/Chicago')
     cached = request.GET.get('cached','')
 
     LOG.info("Fetching " + str(metrics) + " for " + name + " with " + periodical + " frequency")
@@ -111,7 +112,7 @@ def getMetrics(request):
         for metric in metrics:
 
             #get dates
-            sdate,current_date,edate = getBEDates(periodical)
+            sdate,current_date,edate = getBEDates(periodical,timezone)
 
             #get events
             if(cached==''):

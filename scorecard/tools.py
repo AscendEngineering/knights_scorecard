@@ -22,16 +22,16 @@ def authenticateUser(backend, details, response, uid, user, *args, **kwargs):
 
 
 
-def getBEDates(periodical):
+def getBEDates(periodical,curr_timezone='America/Chicago'):
     periodical = periodical.upper()
 
     if(periodical not in PERIODICALS):
         return None
 
     #vars
-    current_date = datetime.datetime.now().replace(tzinfo=timezone('US/Central'))
-    sdate = datetime.datetime(year=current_date.year,month=1,day=1,tzinfo=timezone('US/Central'))
-    edate = datetime.datetime(year=current_date.year,month=1,day=1,tzinfo=timezone('US/Central'))
+    current_date = datetime.datetime.now().replace(tzinfo=timezone(curr_timezone))
+    sdate = datetime.datetime(year=current_date.year,month=1,day=1,tzinfo=timezone(curr_timezone))
+    edate = datetime.datetime(year=current_date.year,month=1,day=1,tzinfo=timezone(curr_timezone))
 
     #set dates
     if (periodical=='A'):

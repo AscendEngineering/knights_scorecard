@@ -24,10 +24,10 @@ var app = new Vue({
       },
  
 
-      request_metrics: function(name,periodical,metric, cached=false){
+      request_metrics: function(name,periodical,timezone, cached=false){
 
         //create the json with the days ago, metrics, and username
-        data = {"periodical": periodical, "metrics": this.metrics, "name": name};
+        data = {"periodical": periodical, "metrics": this.metrics, "name": name, "timezone": timezone};
         
         if(cached){
           data["cached"] = "true"
@@ -102,8 +102,13 @@ var app = new Vue({
 
       this.generate_fields();
 
+      curr_timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
       //request the metric
-      this.request_metrics("all",'M',"whatever",true);
+      this.request_metrics("all",'M',curr_timezone,true);
+
+      
+      
 
   }
 });
