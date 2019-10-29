@@ -38,7 +38,7 @@ while(True):
                 pastEvents = len(getCalendarData(email,current_token,metric,sdate,current_date))
                 futureEvents = len(getCalendarData(email,current_token,metric,current_date,edate))
             except HttpError as err:
-                print(email, "failed to update")
+                print(email,"|", metric,"failed to update")
                 continue
 
 
