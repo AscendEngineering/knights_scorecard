@@ -8,6 +8,7 @@ import datetime
 import os.path
 import pickle
 import scorecard.klogging as LOG
+import sys
 
 def fillWriteTemplate(title,description,start_time,end_time):
     event = {
@@ -47,7 +48,8 @@ def getCalendarData(email,token, search,sdate,edate):
             page_token = events.get('nextPageToken')
         except HttpError as err:
             LOG.error("Not authorized: " + email + "|" + search)
-            break
+            raise HttpError
+
 
         if not page_token:
             break

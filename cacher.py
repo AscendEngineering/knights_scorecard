@@ -31,8 +31,16 @@ while(True):
         for metric in METRICS:
             sdate,current_date,edate = getBEDates('M')
 
-            pastEvents = len(getCalendarData(email,current_token,metric,sdate,current_date))
-            futureEvents = len(getCalendarData(email,current_token,metric,current_date,edate))
+            pastEvents = 0
+            futureEvents = 0
+            
+            try:
+                pastEvents = len(getCalendarData(email,current_token,metric,sdate,current_date))
+                futureEvents = len(getCalendarData(email,current_token,metric,current_date,edate))
+            except HttpError as err:
+                print(email, "failed to update")
+                continue
+
 
             knight(email).update_cache(metric,'M',pastEvents,futureEvents)
         print(email, "cache updated")
