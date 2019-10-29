@@ -48,7 +48,7 @@ def getCalendarData(email,token, search,sdate,edate):
             page_token = events.get('nextPageToken')
         except HttpError as err:
             LOG.error("Not authorized: " + email + "|" + search)
-            raise HttpError
+            raise err
 
 
         if not page_token:
