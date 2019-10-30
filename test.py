@@ -1,126 +1,26 @@
-from __future__ import print_function
-import datetime
-import pickle
-import os.path
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
-from pytz import timezone
-import calendar
-
-# If modifying these scopes, delete the file token.pickle.
-SCOPES = ['https://www.googleapis.com/auth/calendar.events']
-
-
-
-def fillTemplate(title,description,start_time,end_time):
-    event = {
-        'summary': title,
-        'description': description,
-        'start': {
-            'dateTime': start_time,
-            'timeZone': 'America/Chicago',
-        },
-        'end': {
-            'dateTime': end_time,
-            'timeZone': 'America/Chicago',
-        }
-    }
-
-    return event
-
-def expandTime(date,time):
-    return (date+'T'+time+':00-06:00')
-
-def main():
-    """Shows basic usage of the Google Calendar API.
-    Prints the start and name of the next 10 events on the user's calendar.
-    """
-    creds = None
-    # The file token.pickle stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
-    if os.path.exists('token.pickle'):
-        with open('token.pickle', 'rb') as token:
-            creds = pickle.load(token)
-    # If there are no (valid) credentials available, let the user log in.
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', SCOPES)
-            creds = flow.run_local_server()
-        # Save the credentials for the next run
-        with open('token.pickle', 'wb') as token:
-            pickle.dump(creds, token)
-
-    service = build('calendar', 'v3', credentials=creds)
-
-    # Call the Calendar API
-    # now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
-    # print('Getting the upcoming 10 events')
-    # events_result = service.events().list(calendarId='primary', timeMin=now,
-    #                                     maxResults=10, singleEvents=True,
-    #                                     orderBy='startTime').execute()
-    # events = events_result.get('items', [])
-
-    title = "this is a test"
-    description = "test descriptopm"
-    start_time = expandTime('2019-05-05','17:00')
-    end_time = expandTime('2019-05-05','17:30')
-
-    event = fillTemplate(title,description,start_time,end_time)
-    event = service.events().insert(calendarId='stainless809@gmail.com', body=event).execute()
-
-    print('Event created: %s' % (event.get('htmlLink')))
-
-    # if not events:
-    #     print('No upcoming events found.')
-    # for event in events:
-    #     start = event['start'].get('dateTime', event['start'].get('date'))
-    #     print(start, event['summary'])
-
-def getBEDates(periodical):
-
-    if(periodical not in ['A','M','D']):
-        return None
-
-    current_date = datetime.datetime.now().replace(tzinfo=timezone('US/Central'))
-    sdate = datetime.datetime(year=current_date.year,month=1,day=1,tzinfo=timezone('US/Central'))
-    edate = datetime.datetime(year=current_date.year,month=1,day=1,tzinfo=timezone('US/Central'))
-
-    if (periodical=='A'):
-        edate = edate.replace(year=current_date.year+1)
-    elif (periodical=='M'):
-        sdate = sdate.replace(month=current_date.month)
-        last_day_of_month = calendar.monthrange(current_date.year, current_date.month)[-1]
-        edate = edate.replace(month=current_date.month, day = last_day_of_month)
-    else:
-        sdate = sdate.replace(month=current_date.month, day=current_date.day)
-        edate = edate.replace(month=current_date.month, day=current_date.day+1)
-
-    return sdate,edate
-
-
-if __name__ == '__main__':
+from googleapiclient.errors import HttpError
+import google.oauth2.credentials
+from django.contrib.auth.models import User
+from social_django.utils import load_strategy
 
 
 
-# import sys
-# import os
-# import datetime
-# from scorecard.models import *
+#create service
+user = User.objects.get(email="stainless809@gmail.com")
+social_acc = user.social_auth.get(provider='google-oauth2')
+current_token = social_acc.get_access_token(load_strategy())
+print(current_token)
+creds = google.oauth2.credentials.Credentials(current_token)
+service = build('calendar', 'v3', credentials=creds)
 
-
-# def main(argv):
-
-#     newtime = formatTime(str(datetime.datetime.now()))
-
-#     formdata = {'client_name': 'hey', 'client_details': 'sadfsadf', 'date': '2019-05-05', 'time': '17:00'}
-
-    
-
-
-# if __name__ == '__main__':
-#     main(sys.argv)
+page_token = None
+while True:
+  calendar_list = service.calendarList().list(pageToken=page_token).execute()
+  for calendar_list_entry in calendar_list['items']:
+    print(calendar_list_entry['summary'])
+  page_token = calendar_list.get('nextPageToken')
+  if not page_token:
+    break
