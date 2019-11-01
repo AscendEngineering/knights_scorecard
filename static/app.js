@@ -1,10 +1,10 @@
 var app = new Vue({
   el: '#app',
   data: {
-      message: 'Hello Vue!',
-      fields: ["Meeting", "Previous Appointments (1st)", "Future Appointments (EOM)"],
       metrics: ["Associate","Insured","Postponed","Cancelled", "Available"],
       fields: [{key:'Name',sortable:true}],
+      totalHeaders: [],
+      totals:[{}],
       items: [],
       knights: [],
       filter: "",
@@ -40,8 +40,20 @@ var app = new Vue({
           .then((response) => {
             knights_data = response.data["knights"]
             for( i=0; i< knights_data.length; i++){
+              
+              //add to scoreboard
               this.items.push(knights_data[i]);
               this.items.sort((a,b) => (a.Meeting > b.Meeting) ? 1 : -1 );
+
+              //add to totals
+              for(var key in knights_data[i]){
+                if(this.totals[0][key]==undefined){
+                  this.totals[0][key] = knights_data[i][key];
+                }
+                else{
+                  this.totals[0][key] += knights_data[i][key];
+                }
+              }
 
               //hide loading icon
               if(this.items.length == this.metrics.length){
@@ -51,7 +63,6 @@ var app = new Vue({
             }
           })
           .catch(function(response){
-            console.log("failed");
           })
 
       },
@@ -78,19 +89,21 @@ var app = new Vue({
         //go through all metrics
         this.metrics.forEach(element => {
           
-          tempDict = {
-            key: "Future " + element,
+          futureKey = "Future " + element;
+          futureDict = {
+            key: futureKey,
             sortable: true
           };
+          this.totalHeaders.push(futureKey)
+          this.fields.push(futureDict);
 
-          this.fields.push(tempDict);
-
-          tempDict = {
-            key: "Past " + element,
+          pastKey = "Past " + element;
+          pastDict = {
+            key: pastKey,
             sortable: true
           };
-
-          this.fields.push(tempDict);
+          this.totalHeaders.push(pastKey)
+          this.fields.push(pastDict);
 
         });
 
